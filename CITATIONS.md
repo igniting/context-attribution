@@ -244,9 +244,12 @@
 
 ### Additional Papers Discovered During Research
 
-43. **SelfCite: Self-Supervised Alignment for Context Attribution**
-    - https://arxiv.org/html/2502.09604
-    - *Why it matters*: Uses ablation-based contributive alignment to improve citation quality without human supervision
+43. **SelfCite: Self-Supervised Alignment for Context Attribution** - ICML 2025
+    - https://arxiv.org/abs/2502.09604
+    - https://github.com/voidism/SelfCite
+    - https://selfcite.github.io/ (Project page)
+    - https://huggingface.co/voidism/SelfCite-8B (Model)
+    - *Why it matters*: Self-supervised reward signal via context ablation (probability drop + probability hold); +5.3 F1 on LongBench-Cite, approaches Claude Citations API performance with only 8B model
 
 44. **CAMAB: Context Attribution with Multi-Armed Bandit Optimization**
     - https://arxiv.org/html/2506.19977
@@ -270,5 +273,23 @@
     - https://huggingface.co/datasets/THUDM/LongCite-45k (Dataset)
     - https://huggingface.co/THUDM/LongCite-glm4-9b (Model)
     - *Why it matters*: Fine-tuned models (LongCite-8B/9B) for sentence-level citation generation, outperforms GPT-4o by 6.4% in citation F1
+
+49. **AT2: Attribution with Attention (Learning to Attribute)** - 2025
+    - https://arxiv.org/abs/2504.13752
+    - *Why it matters*: Treats attention weights as learnable features for attribution; performs on par with expensive ablation methods while being significantly more efficient; useful for context pruning in QA
+
+50. **AttriBoT: A Bag of Tricks for Efficiently Approximating Leave-One-Out Context Attribution** - 2024
+    - https://arxiv.org/abs/2411.15102
+    - https://github.com/r-three/AttriBoT
+    - *Why it matters*: >300x speedup for LOO attribution using cached activations, hierarchical attribution, and proxy models (Llama 8B → 70B); more faithful to human annotations than target model LOO
+
+51. **TracLLM: A Generic Framework for Attributing Long Context LLMs** - 2025
+    - https://arxiv.org/abs/2506.04202
+    - *Why it matters*: Context traceback for debugging, forensic analysis, and trust; contribution score denoising + ensemble methods; identifies 89% of PoisonedRAG injected texts; outperforms gradient, perturbation, and citation baselines
+
+52. **TokenShapley: Token Level Context Attribution with Shapley Value** - ACL Findings 2025
+    - https://arxiv.org/abs/2507.05261
+    - https://aclanthology.org/2025.findings-acl.200/
+    - *Why it matters*: Fine-grained token-level attribution (not just sentence-level) for keywords like numbers, years, names; combines Shapley values with KNN retrieval; 11-23% accuracy improvement over baselines
 
 ---
