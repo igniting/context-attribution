@@ -1,87 +1,129 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
-import { Slide } from '../components';
+import { Sparkles, ExternalLink, Github, BookOpen } from 'lucide-react';
+import { Slide, Cite } from '../components';
 
 const ConclusionSlide = () => {
   return (
     <Slide className="bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <h2 className="text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-        <Sparkles className="w-10 h-10 text-indigo-500" />
+      <h2 className="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+        <Sparkles className="w-8 h-8 text-indigo-500" />
         Future Directions & Key Takeaways
       </h2>
       
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-indigo-200 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Emerging Research</h3>
-          <div className="space-y-3">
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 rounded-full bg-indigo-500 mt-2" />
-              <div>
-                <span className="font-semibold text-gray-900">Explainability by Design</span>
-                <p className="text-gray-600 text-sm">Hybrid neurosymbolic models combining knowledge graphs with LLMs</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 rounded-full bg-purple-500 mt-2" />
+      <div className="grid md:grid-cols-2 gap-4 mb-4">
+        <div className="bg-white rounded-xl p-4 border border-indigo-200 shadow-sm">
+          <h3 className="text-lg font-bold text-gray-900 mb-3">Emerging Research</h3>
+          <div className="space-y-2">
+            <div className="flex items-start gap-2">
+              <div className="w-2 h-2 rounded-full bg-indigo-500 mt-1.5" />
               <div>
                 <span className="font-semibold text-gray-900">Self-Improving Attribution</span>
-                <p className="text-gray-600 text-sm">START uses synthetic data + preference optimization for continuous improvement</p>
+                <p className="text-gray-600 text-xs">START uses synthetic data + preference optimization for 25.13% improvement <Cite refKey="start" /></p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
+            <div className="flex items-start gap-2">
+              <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5" />
               <div>
-                <span className="font-semibold text-gray-900">Causal Inference Integration</span>
-                <p className="text-gray-600 text-sm">Moving beyond correlation to counterfactual reasoning</p>
+                <span className="font-semibold text-gray-900">Efficient Context Attribution</span>
+                <p className="text-gray-600 text-xs">CAMAB uses Thompson Sampling for fewer queries than ContextCite <Cite refKey="camab" /></p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5" />
+              <div>
+                <span className="font-semibold text-gray-900">Scalable Training Attribution</span>
+                <p className="text-gray-600 text-xs">LoGra achieves 6,500x throughput improvement on Llama3-8B <Cite refKey="logra" /></p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5" />
+              <div>
+                <span className="font-semibold text-gray-900">Fine-grained Long-context Citation</span>
+                <p className="text-gray-600 text-xs">LongCite-8B/9B for sentence-level attribution in long documents <Cite refKey="longCite" /></p>
               </div>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-2xl p-6 border border-purple-200 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Key Researchers</h3>
-          <div className="space-y-3 text-sm">
+        <div className="bg-white rounded-xl p-4 border border-purple-200 shadow-sm">
+          <h3 className="text-lg font-bold text-gray-900 mb-3">Key Research Groups</h3>
+          <div className="space-y-2 text-sm">
             <div>
-              <span className="font-semibold text-purple-700">Anthropic Interpretability Team</span>
-              <p className="text-gray-600">Chris Olah, Jack Lindsey, Trenton Bricken — Circuit tracing pioneers</p>
+              <a href="https://www.anthropic.com/research" target="_blank" rel="noopener noreferrer" className="font-semibold text-purple-700 hover:text-purple-900 flex items-center gap-1">
+                Anthropic Interpretability Team <ExternalLink className="w-3 h-3" />
+              </a>
+              <p className="text-gray-600 text-xs">Chris Olah, Jack Lindsey, Trenton Bricken — Circuit tracing pioneers</p>
             </div>
             <div>
-              <span className="font-semibold text-blue-700">MIT CSAIL/Madry Lab</span>
-              <p className="text-gray-600">Aleksander Mądry — ContextCite creators</p>
+              <a href="https://madry-lab.ml/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 hover:text-blue-900 flex items-center gap-1">
+                MIT CSAIL/Madry Lab <ExternalLink className="w-3 h-3" />
+              </a>
+              <p className="text-gray-600 text-xs">Aleksander Mądry — ContextCite creators</p>
             </div>
             <div>
-              <span className="font-semibold text-emerald-700">Princeton NLP</span>
-              <p className="text-gray-600">Danqi Chen, Tianyu Gao — ALCE benchmark</p>
+              <a href="https://nlp.cs.princeton.edu/" target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-700 hover:text-emerald-900 flex items-center gap-1">
+                Princeton NLP <ExternalLink className="w-3 h-3" />
+              </a>
+              <p className="text-gray-600 text-xs">Danqi Chen, Tianyu Gao — ALCE benchmark</p>
             </div>
             <div>
-              <span className="font-semibold text-orange-700">University of Washington</span>
-              <p className="text-gray-600">Hannaneh Hajishirzi, Akari Asai — Self-RAG</p>
+              <a href="https://transformer-circuits.pub/" target="_blank" rel="noopener noreferrer" className="font-semibold text-orange-700 hover:text-orange-900 flex items-center gap-1">
+                Transformer Circuits Thread <ExternalLink className="w-3 h-3" />
+              </a>
+              <p className="text-gray-600 text-xs">Ongoing mechanistic interpretability research</p>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="bg-indigo-900 rounded-2xl p-6 text-white">
-        <h3 className="text-xl font-bold mb-4">Path Forward for Practitioners</h3>
-        <div className="grid md:grid-cols-3 gap-4">
-          <div className="bg-white/10 rounded-xl p-4">
-            <div className="text-indigo-300 font-semibold mb-2">Native APIs</div>
-            <p className="text-indigo-100 text-sm">Use Anthropic Citations, Google Grounding for RAG applications</p>
+      <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <Github className="w-5 h-5" />
+          Key Resources
+        </h3>
+        <div className="grid md:grid-cols-4 gap-2 text-xs">
+          <a href="https://github.com/MadryLab/context-cite" target="_blank" rel="noopener noreferrer" className="bg-gray-50 rounded-lg p-2 border hover:bg-gray-100 transition-colors">
+            <div className="font-medium text-gray-800">context-cite</div>
+            <p className="text-gray-500">MIT ContextCite implementation</p>
+          </a>
+          <a href="https://github.com/safety-research/circuit-tracer" target="_blank" rel="noopener noreferrer" className="bg-gray-50 rounded-lg p-2 border hover:bg-gray-100 transition-colors">
+            <div className="font-medium text-gray-800">circuit-tracer</div>
+            <p className="text-gray-500">Anthropic attribution graphs</p>
+          </a>
+          <a href="https://github.com/TransformerLensOrg/TransformerLens" target="_blank" rel="noopener noreferrer" className="bg-gray-50 rounded-lg p-2 border hover:bg-gray-100 transition-colors">
+            <div className="font-medium text-gray-800">TransformerLens</div>
+            <p className="text-gray-500">Mechanistic interpretability (2.8k ⭐)</p>
+          </a>
+          <a href="https://github.com/JShollaj/awesome-llm-interpretability" target="_blank" rel="noopener noreferrer" className="bg-gray-50 rounded-lg p-2 border hover:bg-gray-100 transition-colors">
+            <div className="font-medium text-gray-800">awesome-llm-interpretability</div>
+            <p className="text-gray-500">Curated paper list</p>
+          </a>
+        </div>
+      </div>
+      
+      <div className="bg-indigo-900 rounded-xl p-4 text-white">
+        <h3 className="text-lg font-bold mb-3">Path Forward for Practitioners</h3>
+        <div className="grid md:grid-cols-3 gap-3">
+          <div className="bg-white/10 rounded-lg p-3">
+            <div className="text-indigo-300 font-semibold mb-1 text-sm">Native APIs</div>
+            <p className="text-indigo-100 text-xs">Use Anthropic Citations, Google Grounding for RAG applications with built-in attribution</p>
           </div>
-          <div className="bg-white/10 rounded-xl p-4">
-            <div className="text-indigo-300 font-semibold mb-2">Observability</div>
-            <p className="text-indigo-100 text-sm">Deploy Langfuse or LangSmith for production monitoring</p>
+          <div className="bg-white/10 rounded-lg p-3">
+            <div className="text-indigo-300 font-semibold mb-1 text-sm">Observability</div>
+            <p className="text-indigo-100 text-xs">Deploy Langfuse (open-source) or LangSmith for production monitoring and tracing</p>
           </div>
-          <div className="bg-white/10 rounded-xl p-4">
-            <div className="text-indigo-300 font-semibold mb-2">Realistic Expectations</div>
-            <p className="text-indigo-100 text-sm">Current methods provide partial, not complete explanations</p>
+          <div className="bg-white/10 rounded-lg p-3">
+            <div className="text-indigo-300 font-semibold mb-1 text-sm">Realistic Expectations</div>
+            <p className="text-indigo-100 text-xs">Current methods explain ~25% of behavior satisfactorily — plan for uncertainty <Cite refKey="anthropicBiology" /></p>
           </div>
         </div>
       </div>
       
-      <div className="mt-8 text-center">
-        <p className="text-gray-500 text-sm">
+      <div className="mt-4 text-center">
+        <p className="text-gray-500 text-xs flex items-center justify-center gap-2">
+          <BookOpen className="w-4 h-4" />
           Based on research from Anthropic, MIT CSAIL, Princeton NLP, and other leading AI research groups.
+          See citations.md for full bibliography.
         </p>
       </div>
     </Slide>
@@ -89,4 +131,3 @@ const ConclusionSlide = () => {
 };
 
 export default ConclusionSlide;
-
