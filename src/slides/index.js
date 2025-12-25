@@ -1,6 +1,5 @@
 export { default as TitleSlide } from './TitleSlide';
 export { default as WhatIsAttributionSlide } from './WhatIsAttributionSlide';
-export { default as AttributionGapSlide } from './AttributionGapSlide';
 export { default as MethodsOverviewSlide } from './MethodsOverviewSlide';
 export { default as IntegratedGradientsSlide } from './IntegratedGradientsSlide';
 export { default as ContextCiteSlide } from './ContextCiteSlide';

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   TitleSlide,
   WhatIsAttributionSlide,
-  AttributionGapSlide,
   MethodsOverviewSlide,
   IntegratedGradientsSlide,
   ContextCiteSlide,
@@ -23,7 +22,6 @@ export default function ContextAttributionPresentation() {
   const slides = [
     TitleSlide,
     WhatIsAttributionSlide,
-    AttributionGapSlide,
     MethodsOverviewSlide,
     IntegratedGradientsSlide,      // New: Deep dive on gradient methods
     ContextCiteSlide,
