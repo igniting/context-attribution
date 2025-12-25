@@ -165,52 +165,103 @@ const FaithfulnessSlide = () => {
 
       {/* Method Comparison */}
       {activeMethod === 'comparison' && (
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-4">
-          <h3 className="text-lg font-bold text-gray-900 mb-3">Faithfulness Detection Methods Compared</h3>
+        <div className="space-y-3 mb-4">
+          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Semantic Entropy (Farquhar et al., Nature 2024)</h3>
+            
+            <div className="grid md:grid-cols-2 gap-4 mb-3">
+              <div>
+                <h4 className="font-semibold text-gray-700 text-sm mb-2">Core Insight</h4>
+                <p className="text-gray-600 text-xs mb-2">
+                  Measure uncertainty over <strong>meanings</strong>, not tokens. Different phrasings of 
+                  the same answer should cluster together.
+                </p>
+                <div className="bg-gray-50 rounded-lg p-2 font-mono text-xs">
+                  <div className="text-purple-600 mb-1">// Semantic entropy</div>
+                  <div className="text-gray-700">
+                    SE = −Σ<sub>c∈C</sub> p(c) log p(c)<br/>
+                    where c = semantic equivalence class
+                  </div>
+                </div>
+              </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-2 font-semibold text-gray-700">Method</th>
-                  <th className="text-left py-2 px-2 font-semibold text-gray-700">Approach</th>
-                  <th className="text-center py-2 px-2 font-semibold text-gray-700">Real FPR</th>
-                  <th className="text-left py-2 px-2 font-semibold text-gray-700">Trade-off</th>
-                </tr>
-              </thead>
-              <tbody className="text-xs">
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 px-2 font-medium">Embedding Similarity</td>
-                  <td className="py-2 px-2 text-gray-600">Cosine distance threshold</td>
-                  <td className="py-2 px-2 text-center"><span className="text-red-600 font-bold">100%</span></td>
-                  <td className="py-2 px-2 text-gray-600">Fast but unreliable</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 px-2 font-medium">NLI (TRUE)</td>
-                  <td className="py-2 px-2 text-gray-600">T5-11B entailment</td>
-                  <td className="py-2 px-2 text-center"><span className="text-orange-600 font-bold">~15%</span></td>
-                  <td className="py-2 px-2 text-gray-600">Good accuracy, moderate cost</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 px-2 font-medium">GPT-4 Reasoning</td>
-                  <td className="py-2 px-2 text-gray-600">Chain-of-thought verification</td>
-                  <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">7%</span></td>
-                  <td className="py-2 px-2 text-gray-600">Best accuracy, highest cost</td>
-                </tr>
-                <tr className="border-b border-gray-100">
-                  <td className="py-2 px-2 font-medium">Semantic Entropy</td>
-                  <td className="py-2 px-2 text-gray-600">Sample multiple outputs</td>
-                  <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">9-11%</span></td>
-                  <td className="py-2 px-2 text-gray-600">89-91% detection accuracy</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-2 font-medium">DDA</td>
-                  <td className="py-2 px-2 text-gray-600">Debias & Denoise Attribution</td>
-                  <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">93.49% AUC</span></td>
-                  <td className="py-2 px-2 text-gray-600">Training data attribution</td>
-                </tr>
-              </tbody>
-            </table>
+              <div>
+                <h4 className="font-semibold text-gray-700 text-sm mb-2">Detection Process</h4>
+                <div className="space-y-1 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">1</span>
+                    <span className="text-gray-600">Sample N responses at temperature {">"} 0</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">2</span>
+                    <span className="text-gray-600">Cluster by semantic equivalence (NLI)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">3</span>
+                    <span className="text-gray-600">High entropy → likely hallucination</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-2 text-xs">
+              <div className="bg-emerald-50 rounded p-2 border border-emerald-100">
+                <div className="font-bold text-emerald-700">89-91% accuracy</div>
+                <div className="text-emerald-600">Hallucination detection</div>
+              </div>
+              <div className="bg-blue-50 rounded p-2 border border-blue-100">
+                <div className="font-bold text-blue-700">Semantic probes</div>
+                <div className="text-blue-600">Follow-up work trains linear probes</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <h3 className="font-bold text-gray-900 mb-3 text-sm">Method Comparison Table</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-1.5 px-2 font-semibold text-gray-700">Method</th>
+                    <th className="text-left py-1.5 px-2 font-semibold text-gray-700">Approach</th>
+                    <th className="text-center py-1.5 px-2 font-semibold text-gray-700">Real FPR</th>
+                    <th className="text-left py-1.5 px-2 font-semibold text-gray-700">Trade-off</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1.5 px-2 font-medium">Embedding</td>
+                    <td className="py-1.5 px-2 text-gray-600">Cosine threshold</td>
+                    <td className="py-1.5 px-2 text-center"><span className="text-red-600 font-bold">100%</span></td>
+                    <td className="py-1.5 px-2 text-gray-600">Fast, unreliable</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1.5 px-2 font-medium">NLI (TRUE)</td>
+                    <td className="py-1.5 px-2 text-gray-600">T5-11B entailment</td>
+                    <td className="py-1.5 px-2 text-center"><span className="text-orange-600 font-bold">~15%</span></td>
+                    <td className="py-1.5 px-2 text-gray-600">Good, moderate cost</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1.5 px-2 font-medium">GPT-4 CoT</td>
+                    <td className="py-1.5 px-2 text-gray-600">Reasoning verification</td>
+                    <td className="py-1.5 px-2 text-center"><span className="text-green-600 font-bold">7%</span></td>
+                    <td className="py-1.5 px-2 text-gray-600">Best, highest cost</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1.5 px-2 font-medium">Semantic Entropy</td>
+                    <td className="py-1.5 px-2 text-gray-600">Sample + cluster</td>
+                    <td className="py-1.5 px-2 text-center"><span className="text-green-600 font-bold">9-11%</span></td>
+                    <td className="py-1.5 px-2 text-gray-600">89-91% accuracy</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1.5 px-2 font-medium">DDA</td>
+                    <td className="py-1.5 px-2 text-gray-600">Training data attr.</td>
+                    <td className="py-1.5 px-2 text-center"><span className="text-green-600 font-bold">93.49%</span></td>
+                    <td className="py-1.5 px-2 text-gray-600">AUC metric</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

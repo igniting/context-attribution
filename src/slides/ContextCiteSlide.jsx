@@ -201,30 +201,83 @@ const ContextCiteSlide = () => {
 
       {/* Related Work Tab */}
       {activeTab === 'related' && (
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-white rounded-xl p-4 border border-purple-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">CAMAB: Multi-Armed Bandit Optimization</h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Uses Thompson Sampling instead of random ablation selection. More efficient context attribution with fewer queries.
-            </p>
-            <div className="bg-purple-50 rounded-lg p-3 text-xs">
-              <div className="font-semibold text-purple-800 mb-1">Key Improvement:</div>
-              <p className="text-purple-700">
-                Adaptive sampling focuses ablations on high-uncertainty sources, outperforming ContextCite with fewer LLM calls.
+        <div className="space-y-3 mb-4">
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className="bg-white rounded-xl p-4 border border-purple-200 shadow-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">CAMAB: Thompson Sampling Optimization</h3>
+              <p className="text-gray-600 text-xs mb-3">
+                Multi-armed bandit approach replaces random ablation selection with adaptive sampling.
               </p>
+              <div className="bg-gray-50 rounded-lg p-2 font-mono text-xs mb-2">
+                <div className="text-purple-600 mb-1">// Thompson Sampling for ablation selection</div>
+                <div className="text-gray-700">
+                  θ<sub>i</sub> ~ Beta(α<sub>i</sub>, β<sub>i</sub>)<br/>
+                  Select source i = argmax(θ<sub>i</sub>)
+                </div>
+              </div>
+              <div className="text-purple-700 text-xs">
+                <strong>Result:</strong> Fewer queries than ContextCite with comparable attribution quality.
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl p-4 border border-cyan-200 shadow-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">SelfCite: Self-Supervised Reward (ICML 2025)</h3>
+              <p className="text-gray-600 text-xs mb-3">
+                Trains citation via context ablation without human labels. Uses probability change as reward signal.
+              </p>
+              <div className="bg-gray-50 rounded-lg p-2 font-mono text-xs mb-2">
+                <div className="text-cyan-600 mb-1">// Dual reward signals</div>
+                <div className="text-gray-700">
+                  P<sub>drop</sub> = P(y|C) − P(y|C\cite) {/* high = good cite */}<br/>
+                  P<sub>hold</sub> = P(y|cite) {/* high = sufficient cite */}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="bg-cyan-50 rounded p-2 border border-cyan-100">
+                  <div className="font-bold text-cyan-700">+5.3 F1</div>
+                  <div className="text-cyan-600">on LongBench-Cite</div>
+                </div>
+                <div className="bg-cyan-50 rounded p-2 border border-cyan-100">
+                  <div className="font-bold text-cyan-700">8B model</div>
+                  <div className="text-cyan-600">approaches Claude API</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-4 border border-cyan-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">SelfCite: Self-Supervised Alignment</h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Uses ablation-based contributive alignment to improve citation quality without human supervision.
-            </p>
-            <div className="bg-cyan-50 rounded-lg p-3 text-xs">
-              <div className="font-semibold text-cyan-800 mb-1">Key Approach:</div>
-              <p className="text-cyan-700">
-                Self-generated training signal from ablation experiments enables continuous improvement of citation behavior.
-              </p>
+          <div className="bg-white rounded-xl p-3 border border-gray-200">
+            <h4 className="font-semibold text-gray-800 text-sm mb-2">Method Comparison</h4>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-1 px-2 font-semibold text-gray-700">Method</th>
+                    <th className="text-center py-1 px-2 font-semibold text-gray-700">LLM Calls</th>
+                    <th className="text-center py-1 px-2 font-semibold text-gray-700">Training</th>
+                    <th className="text-left py-1 px-2 font-semibold text-gray-700">Best For</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1 px-2 font-medium">ContextCite</td>
+                    <td className="py-1 px-2 text-center">~32</td>
+                    <td className="py-1 px-2 text-center">None</td>
+                    <td className="py-1 px-2 text-gray-600">General attribution, debugging</td>
+                  </tr>
+                  <tr className="border-b border-gray-100">
+                    <td className="py-1 px-2 font-medium">CAMAB</td>
+                    <td className="py-1 px-2 text-center">&lt;32</td>
+                    <td className="py-1 px-2 text-center">None</td>
+                    <td className="py-1 px-2 text-gray-600">Efficiency-critical applications</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 px-2 font-medium">SelfCite</td>
+                    <td className="py-1 px-2 text-center">1</td>
+                    <td className="py-1 px-2 text-center">Required</td>
+                    <td className="py-1 px-2 text-gray-600">Production citation generation</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

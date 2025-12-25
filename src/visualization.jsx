@@ -4,11 +4,15 @@ import {
   WhatIsAttributionSlide,
   AttributionGapSlide,
   MethodsOverviewSlide,
+  IntegratedGradientsSlide,
   ContextCiteSlide,
   CircuitTracingSlide,
+  TrainingDataAttributionSlide,
   SelfRAGSlide,
   RAGBenchmarksSlide,
   FaithfulnessSlide,
+  AdvancedMethodsSlide,
+  ProductionAPIsSlide,
   UseCasesSlide,
   ConclusionSlide
 } from './slides';
@@ -21,11 +25,15 @@ export default function ContextAttributionPresentation() {
     WhatIsAttributionSlide,
     AttributionGapSlide,
     MethodsOverviewSlide,
+    IntegratedGradientsSlide,      // New: Deep dive on gradient methods
     ContextCiteSlide,
     CircuitTracingSlide,
+    TrainingDataAttributionSlide,  // New: Training data attribution
     SelfRAGSlide,
     RAGBenchmarksSlide,
     FaithfulnessSlide,
+    AdvancedMethodsSlide,          // New: TokenShapley, AttriBoT, etc.
+    ProductionAPIsSlide,           // New: Anthropic/Google/OpenAI APIs
     UseCasesSlide,
     ConclusionSlide
   ];

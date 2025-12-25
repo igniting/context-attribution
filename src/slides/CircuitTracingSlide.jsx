@@ -124,18 +124,50 @@ const CircuitTracingSlide = () => {
         </svg>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-3 mb-4">
+      <div className="grid md:grid-cols-2 gap-3 mb-4">
         <div className="bg-white rounded-lg p-3 border border-purple-200">
-          <div className="text-2xl font-bold text-purple-600 mb-1">30M</div>
-          <div className="text-xs text-gray-600">Interpretable features via sparse autoencoders</div>
+          <h4 className="font-semibold text-gray-800 text-sm mb-2">Sparse Autoencoders (SAEs)</h4>
+          <div className="bg-gray-50 rounded p-2 font-mono text-xs mb-2">
+            <div className="text-purple-600 mb-1">// SAE architecture</div>
+            <div className="text-gray-700">
+              h = activation (hidden state)<br/>
+              z = ReLU(W<sub>enc</sub>h + b<sub>enc</sub>) {/* sparse codes */}<br/>
+              ĥ = W<sub>dec</sub>z + b<sub>dec</sub> {/* reconstruction */}
+            </div>
+          </div>
+          <div className="text-gray-600 text-xs">
+            <strong>30M features</strong> learned from Claude 3.5 Haiku activations.
+            Sparsity encourages monosemantic representations.
+          </div>
         </div>
+
         <div className="bg-white rounded-lg p-3 border border-purple-200">
-          <div className="text-2xl font-bold text-purple-600 mb-1">~25%</div>
-          <div className="text-xs text-gray-600">Prompts with satisfying explanations (current limitation)</div>
+          <h4 className="font-semibold text-gray-800 text-sm mb-2">Cross-Layer Transcoders</h4>
+          <div className="bg-gray-50 rounded p-2 font-mono text-xs mb-2">
+            <div className="text-purple-600 mb-1">// Attribution graph edges</div>
+            <div className="text-gray-700">
+              f<sub>i</sub><sup>l</sup> → f<sub>j</sub><sup>l+1</sup> with weight w<sub>ij</sub><br/>
+              {/* trace information flow across layers */}
+            </div>
+          </div>
+          <div className="text-gray-600 text-xs">
+            Maps feature interactions through computation, enabling multi-step reasoning traces.
+          </div>
         </div>
-        <div className="bg-white rounded-lg p-3 border border-purple-200">
-          <div className="text-2xl font-bold text-purple-600 mb-1">2027</div>
-          <div className="text-xs text-gray-600">Target for significant interpretability progress</div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-2 mb-4">
+        <div className="bg-purple-50 rounded-lg p-2 border border-purple-200 text-center">
+          <div className="text-2xl font-bold text-purple-600">30M</div>
+          <div className="text-xs text-gray-600">Interpretable features</div>
+        </div>
+        <div className="bg-orange-50 rounded-lg p-2 border border-orange-200 text-center">
+          <div className="text-2xl font-bold text-orange-600">~25%</div>
+          <div className="text-xs text-gray-600">Satisfying explanations</div>
+        </div>
+        <div className="bg-blue-50 rounded-lg p-2 border border-blue-200 text-center">
+          <div className="text-2xl font-bold text-blue-600">2027</div>
+          <div className="text-xs text-gray-600">Target for progress</div>
         </div>
       </div>
 

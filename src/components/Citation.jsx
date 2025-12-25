@@ -207,6 +207,62 @@ export const CITATIONS = {
     venue: 'arXiv',
     year: '2024',
     url: 'https://arxiv.org/abs/2409.02897'
+  },
+  tokenShapley: {
+    id: '52',
+    authors: 'Authors',
+    title: 'TokenShapley: Token Level Context Attribution with Shapley Value',
+    venue: 'ACL Findings',
+    year: '2025',
+    url: 'https://arxiv.org/abs/2507.05261'
+  },
+  attriBot: {
+    id: '50',
+    authors: 'Authors',
+    title: 'AttriBoT: A Bag of Tricks for Efficiently Approximating Leave-One-Out Context Attribution',
+    venue: 'arXiv',
+    year: '2024',
+    url: 'https://arxiv.org/abs/2411.15102'
+  },
+  tracLLM: {
+    id: '51',
+    authors: 'Authors',
+    title: 'TracLLM: A Generic Framework for Attributing Long Context LLMs',
+    venue: 'arXiv',
+    year: '2025',
+    url: 'https://arxiv.org/abs/2506.04202'
+  },
+  at2: {
+    id: '49',
+    authors: 'Authors',
+    title: 'AT2: Attribution with Attention (Learning to Attribute)',
+    venue: 'arXiv',
+    year: '2025',
+    url: 'https://arxiv.org/abs/2504.13752'
+  },
+  airRep: {
+    id: '47',
+    authors: 'Authors',
+    title: 'AirRep: Representational Optimization for Training Data Attribution',
+    venue: 'arXiv',
+    year: '2025',
+    url: 'https://arxiv.org/html/2505.18513'
+  },
+  langfuse: {
+    id: '13',
+    authors: 'Langfuse Team',
+    title: 'Langfuse: Open Source LLM Engineering Platform',
+    venue: 'GitHub',
+    year: '2024',
+    url: 'https://github.com/langfuse/langfuse'
+  },
+  langsmith: {
+    id: '14',
+    authors: 'LangChain',
+    title: 'LangSmith Observability',
+    venue: 'LangChain',
+    year: '2024',
+    url: 'https://www.langchain.com/langsmith/observability'
   }
 };
 

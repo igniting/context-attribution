@@ -153,21 +153,58 @@ const SelfRAGSlide = () => {
         )}
       </div>
 
-      <div className="grid md:grid-cols-3 gap-3 mb-4">
-        <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-          <div className="text-2xl font-bold text-emerald-600">55.8%</div>
-          <div className="text-emerald-700 text-xs">Self-RAG accuracy on PopQA</div>
-          <div className="text-emerald-600 text-xs mt-1">vs 24.4% baseline</div>
+      <div className="grid md:grid-cols-2 gap-3 mb-4">
+        <div className="bg-white rounded-lg p-3 border border-emerald-200">
+          <h4 className="font-semibold text-gray-800 text-sm mb-2">Self-RAG Performance</h4>
+          <div className="grid grid-cols-2 gap-2 text-xs mb-2">
+            <div className="bg-emerald-50 rounded p-2 text-center">
+              <div className="text-xl font-bold text-emerald-600">55.8%</div>
+              <div className="text-emerald-700">PopQA accuracy</div>
+            </div>
+            <div className="bg-gray-50 rounded p-2 text-center">
+              <div className="text-xl font-bold text-gray-500">24.4%</div>
+              <div className="text-gray-600">Baseline (Alpaca-13B)</div>
+            </div>
+          </div>
+          <div className="text-gray-600 text-xs">
+            Reflection tokens enable runtime controllability without retraining.
+          </div>
         </div>
-        <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-          <div className="text-2xl font-bold text-purple-600">+25.13%</div>
-          <div className="text-purple-700 text-xs">START framework improvement</div>
-          <div className="text-purple-600 text-xs mt-1">No human annotations needed</div>
+
+        <div className="bg-white rounded-lg p-3 border border-blue-200">
+          <h4 className="font-semibold text-gray-800 text-sm mb-2">LongCite: Fine-Grained Long-Context</h4>
+          <div className="bg-gray-50 rounded p-2 font-mono text-xs mb-2">
+            <div className="text-blue-600">// Sentence-level citation in 128k+ context</div>
+            <div className="text-gray-700">LongCite-8B, LongCite-9B (GLM4-based)</div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="bg-blue-50 rounded p-2 border border-blue-100">
+              <div className="font-bold text-blue-700">+6.4% F1</div>
+              <div className="text-blue-600">vs GPT-4o</div>
+            </div>
+            <div className="bg-blue-50 rounded p-2 border border-blue-100">
+              <div className="font-bold text-blue-700">45k</div>
+              <div className="text-blue-600">training examples</div>
+            </div>
+          </div>
         </div>
-        <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
-          <div className="text-2xl font-bold text-blue-600">+6.4%</div>
-          <div className="text-blue-700 text-xs">LongCite citation F1</div>
-          <div className="text-blue-600 text-xs mt-1">Over GPT-4o baseline</div>
+      </div>
+
+      <div className="bg-white rounded-lg p-3 border border-purple-200 mb-4">
+        <h4 className="font-semibold text-gray-800 text-sm mb-2">START: Self-Taught Attribution (EMNLP 2024)</h4>
+        <div className="grid md:grid-cols-3 gap-2 text-xs">
+          <div className="bg-purple-50 rounded p-2 border border-purple-100">
+            <div className="font-semibold text-purple-800 mb-1">Synthetic Warming</div>
+            <div className="text-purple-700">Bootstrap with synthetic citation data</div>
+          </div>
+          <div className="bg-purple-50 rounded p-2 border border-purple-100">
+            <div className="font-semibold text-purple-800 mb-1">Fine-Grained DPO</div>
+            <div className="text-purple-700">Preference optimization per statement</div>
+          </div>
+          <div className="bg-purple-50 rounded p-2 border border-purple-100">
+            <div className="font-semibold text-purple-800 mb-1">+25.13%</div>
+            <div className="text-purple-700">Average improvement, no human labels</div>
+          </div>
         </div>
       </div>
 
