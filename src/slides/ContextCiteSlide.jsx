@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Layers, Info } from 'lucide-react';
+import { Layers, Info, Zap, CheckCircle, XCircle } from 'lucide-react';
 import { Slide } from '../components';
 
 const ContextCiteSlide = () => {
   const [showAblations, setShowAblations] = useState(false);
+  const [activeTab, setActiveTab] = useState('method');
   
   useEffect(() => {
     const timer = setTimeout(() => setShowAblations(true), 500);
@@ -12,54 +13,190 @@ const ContextCiteSlide = () => {
   
   return (
     <Slide className="bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-      <h2 className="text-4xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-        <Layers className="w-10 h-10 text-blue-500" />
+      <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+        <Layers className="w-8 h-8 text-blue-500" />
         ContextCite: Perturbation-Based Attribution
       </h2>
       
-      <p className="text-xl text-gray-600 mb-8">
-        MIT/MadryLab's breakthrough approach (NeurIPS 2024) for practical context attribution
+      <p className="text-lg text-gray-600 mb-4">
+        MIT/MadryLab (NeurIPS 2024) — Sparse linear surrogate for efficient context attribution
       </p>
       
-      <div className="grid md:grid-cols-2 gap-8 mb-8">
-        <div className="bg-white rounded-2xl p-6 border border-blue-200 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">How It Works</h3>
-          <ol className="space-y-3 text-gray-700">
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center flex-shrink-0">1</span>
-              <span>Learn a sparse linear surrogate model approximating LLM response changes</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center flex-shrink-0">2</span>
-              <span>Include or exclude context parts and observe output differences</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center flex-shrink-0">3</span>
-              <span>Use LASSO for sparsity — identify the few truly influential sources</span>
-            </li>
-          </ol>
-        </div>
-        
-        <div className="bg-white rounded-2xl p-6 border border-blue-200 shadow-sm">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Key Metric</h3>
-          <div className={`text-center transition-all duration-700 ${showAblations ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-            <div className="text-6xl font-bold text-blue-600 mb-2">~32</div>
-            <div className="text-gray-600">context ablations needed</div>
-            <div className="text-sm text-gray-500 mt-2">Even with hundreds of sources</div>
-          </div>
-        </div>
+      {/* Tab Navigation */}
+      <div className="flex gap-2 mb-4">
+        {[
+          { id: 'method', label: 'Methodology' },
+          { id: 'math', label: 'LASSO Formulation' },
+          { id: 'types', label: 'Attribution Types' }
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === tab.id
+                ? 'bg-blue-600 text-white'
+                : 'bg-white border border-blue-200 text-blue-700 hover:bg-blue-50'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
       
-      <div className="bg-blue-900 rounded-2xl p-6 text-white">
-        <div className="flex items-start gap-4">
-          <Info className="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" />
-          <div>
-            <h4 className="font-semibold mb-2">Critical Distinction</h4>
-            <p className="text-blue-100">
-              ContextCite distinguishes between <span className="text-blue-300 font-semibold">corroborative attribution</span> (what supports a statement) 
-              and <span className="text-blue-300 font-semibold">contributive attribution</span> (what caused the generation) — 
-              a distinction critical for verification workflows.
+      {/* Methodology Tab */}
+      {activeTab === 'method' && (
+        <div className="grid md:grid-cols-2 gap-6 mb-4">
+          <div className="bg-white rounded-xl p-5 border border-blue-200 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Ablation-Based Approach</h3>
+            <ol className="space-y-2 text-gray-700 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="w-5 h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                <span>Partition context into <code className="bg-gray-100 px-1 rounded">n</code> sources (sentences, paragraphs, or documents)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-5 h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                <span>Generate random binary masks <code className="bg-gray-100 px-1 rounded">m ∈ {"{0,1}"}ⁿ</code> to include/exclude sources</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-5 h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                <span>Measure log-probability of target response under each masked context</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="w-5 h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+                <span>Fit sparse linear model via LASSO to approximate influence scores</span>
+              </li>
+            </ol>
+          </div>
+          
+          <div className="bg-white rounded-xl p-5 border border-blue-200 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Key Efficiency</h3>
+            <div className={`text-center transition-all duration-700 ${showAblations ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+              <div className="text-5xl font-bold text-blue-600 mb-1">~32</div>
+              <div className="text-gray-600 text-sm">ablations needed</div>
+              <div className="text-xs text-gray-500 mt-1">Even with hundreds of sources</div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-100">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Why so few?</h4>
+              <p className="text-xs text-gray-600">
+                LASSO's L1 regularization enforces sparsity — most context sources have near-zero influence. 
+                Random sampling with ~32 ablations provides sufficient signal to identify the few truly influential sources.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* LASSO Formulation Tab */}
+      {activeTab === 'math' && (
+        <div className="bg-white rounded-xl p-5 border border-blue-200 shadow-sm mb-4">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">LASSO Surrogate Model</h3>
+          
+          <div className="bg-gray-50 rounded-lg p-4 mb-4 font-mono text-sm">
+            <div className="text-gray-700 mb-2">
+              <span className="text-blue-600">minimize</span> ||y - Xβ||² + λ||β||₁
+            </div>
+            <div className="text-gray-500 text-xs mt-2">
+              where: y = log-probabilities, X = ablation masks, β = attribution scores, λ = sparsity penalty
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+              <h4 className="font-semibold text-blue-800 mb-2 text-sm">Response Variable (y)</h4>
+              <p className="text-blue-700 text-xs">
+                Log-probability of the target response tokens under each masked context configuration. 
+                Higher values indicate the masked context better supports generation.
+              </p>
+            </div>
+            
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+              <h4 className="font-semibold text-blue-800 mb-2 text-sm">L1 Regularization (λ||β||₁)</h4>
+              <p className="text-blue-700 text-xs">
+                Forces most coefficients to exactly zero, not just small values. 
+                This identifies the sparse set of sources that actually matter for attribution.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-4 pt-4 border-t border-gray-200">
+            <h4 className="font-semibold text-gray-700 mb-2 text-sm">Comparison to Gradient Methods</h4>
+            <div className="grid md:grid-cols-2 gap-3 text-xs">
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600"><strong>Model-agnostic:</strong> Works with any LLM API (no gradients needed)</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600"><strong>Interpretable:</strong> Coefficients directly represent source importance</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <XCircle className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600"><strong>Trade-off:</strong> ~32 forward passes vs single backward pass</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-600"><strong>No attention issues:</strong> Avoids "self-repair" problems in gradient flow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Attribution Types Tab */}
+      {activeTab === 'types' && (
+        <div className="grid md:grid-cols-2 gap-6 mb-4">
+          <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-200">
+            <h3 className="text-lg font-bold text-emerald-800 mb-3">Corroborative Attribution</h3>
+            <p className="text-emerald-700 text-sm mb-3">
+              Which sources <em>support</em> the generated statement?
             </p>
+            <div className="bg-white rounded-lg p-3 border border-emerald-100 text-xs">
+              <div className="font-mono text-gray-600 mb-2">
+                Query: "What causes ocean tides?"
+              </div>
+              <div className="font-mono text-gray-600 mb-2">
+                Response: "Tides are caused by gravitational pull of the moon."
+              </div>
+              <div className="text-emerald-600 font-medium">
+                → Which retrieved docs contain evidence about lunar gravity and tides?
+              </div>
+            </div>
+            <p className="text-emerald-600 text-xs mt-3">
+              <strong>Use case:</strong> Citation verification, fact-checking
+            </p>
+          </div>
+          
+          <div className="bg-blue-50 rounded-xl p-5 border border-blue-200">
+            <h3 className="text-lg font-bold text-blue-800 mb-3">Contributive Attribution</h3>
+            <p className="text-blue-700 text-sm mb-3">
+              Which sources <em>caused</em> this specific generation?
+            </p>
+            <div className="bg-white rounded-lg p-3 border border-blue-100 text-xs">
+              <div className="font-mono text-gray-600 mb-2">
+                Query: "What causes ocean tides?"
+              </div>
+              <div className="font-mono text-gray-600 mb-2">
+                Response: "Tides occur due to Earth's rotation speed."
+              </div>
+              <div className="text-blue-600 font-medium">
+                → Which source led to this (possibly incorrect) claim about rotation?
+              </div>
+            </div>
+            <p className="text-blue-600 text-xs mt-3">
+              <strong>Use case:</strong> Debugging, error tracing, hallucination detection
+            </p>
+          </div>
+        </div>
+      )}
+      
+      <div className="bg-blue-900 rounded-xl p-4 text-white">
+        <div className="flex items-start gap-3">
+          <Info className="w-5 h-5 text-blue-300 flex-shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <span className="text-blue-200">
+              <strong className="text-white">Key insight:</strong> Corroborative ≠ Contributive. A source may support a claim (corroborative) 
+              without being the reason the model generated it (contributive). ContextCite handles both via targeted ablation design.
+            </span>
           </div>
         </div>
       </div>
@@ -68,4 +205,3 @@ const ContextCiteSlide = () => {
 };
 
 export default ContextCiteSlide;
-

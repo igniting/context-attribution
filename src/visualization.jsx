@@ -9,9 +9,8 @@ import {
   CircuitTracingSlide,
   SelfRAGSlide,
   RAGBenchmarksSlide,
-  IndustryToolsSlide,
+  FaithfulnessSlide,
   UseCasesSlide,
-  RegulatorySlide,
   ConclusionSlide
 } from './slides';
 
@@ -27,9 +26,8 @@ export default function ContextAttributionPresentation() {
     CircuitTracingSlide,
     SelfRAGSlide,
     RAGBenchmarksSlide,
-    IndustryToolsSlide,
+    FaithfulnessSlide,
     UseCasesSlide,
-    RegulatorySlide,
     ConclusionSlide
   ];
   
