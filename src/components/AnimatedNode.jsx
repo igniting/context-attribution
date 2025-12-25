@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 const AnimatedNode = ({ x, y, label, active, delay = 0, size = 40 }) => {
   const [visible, setVisible] = useState(false);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), delay);
     return () => clearTimeout(timer);
   }, [delay]);
-  
+
   return (
     <g className={`transition-all duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
       <circle

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Code, Users, AlertTriangle, Building, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
-import { Slide, Cite } from '../components';
+import { Slide } from '../components';
 
 const UseCasesSlide = () => {
   const [expanded, setExpanded] = useState(null);
-  
+
   const useCases = [
     {
       icon: Code,
@@ -12,7 +12,6 @@ const UseCasesSlide = () => {
       color: 'blue',
       preview: 'Trace multi-step reasoning to find errors',
       detail: 'Comprehensive logging of prompt history, model actions, and retrieval events enables error localization. Circuit tracing reveals multi-step reasoning like "Dallas → Texas → Austin".',
-      citations: ['anthropicBiology', 'transformerLens'],
       stat: '30M',
       statLabel: 'interpretable features in Anthropic circuit tracing'
     },
@@ -22,7 +21,6 @@ const UseCasesSlide = () => {
       color: 'emerald',
       preview: 'Help users appropriately rely on AI outputs',
       detail: 'CHI 2025 research shows explanations only increase appropriate trust when users can compare responses. Gains disappear in isolation. LLM-powered analysis as secondary advisor improves reliance.',
-      citations: ['humanTrust'],
       stat: 'CHI 2025',
       statLabel: 'Human trust research findings'
     },
@@ -32,7 +30,6 @@ const UseCasesSlide = () => {
       color: 'orange',
       preview: 'Identify unsupported claims in outputs',
       detail: 'Semantic entropy detects hallucinations with 89-91% accuracy by measuring uncertainty over meanings rather than tokens. DDA achieves 93.49% AUC on hallucination tracing.',
-      citations: ['semanticEntropy', 'dda'],
       stat: '89-91%',
       statLabel: 'accuracy with semantic entropy'
     },
@@ -42,13 +39,12 @@ const UseCasesSlide = () => {
       color: 'purple',
       preview: 'Meet EU AI Act and GDPR requirements',
       detail: 'EU AI Act (effective Aug 2024, compliance by Aug 2026) requires high-risk systems to be transparent. GDPR Article 22 mandates meaningful information about automated decision logic. €35M/7% revenue penalties.',
-      citations: [],
       stat: '€35M',
       statLabel: 'maximum penalty for violations',
       link: 'https://gdprlocal.com/ai-transparency-requirements/'
     }
   ];
-  
+
   const getColor = (color) => {
     const colors = {
       blue: 'from-blue-500 to-blue-600 border-blue-400',
@@ -58,18 +54,21 @@ const UseCasesSlide = () => {
     };
     return colors[color];
   };
-  
+
   return (
-    <Slide className="bg-gradient-to-br from-gray-50 to-white">
+    <Slide
+      className="bg-gradient-to-br from-gray-50 to-white"
+      references={['anthropicBiology', 'humanTrust', 'semanticEntropy', 'transformerLens']}
+    >
       <h2 className="text-3xl font-bold text-gray-900 mb-3 flex items-center gap-3">
         <Building className="w-8 h-8 text-purple-500" />
         Use Cases in LLM Agents
       </h2>
-      
+
       <p className="text-gray-600 mb-6">
         Attribution enables debugging, trust, and compliance across agent applications
       </p>
-      
+
       <div className="grid md:grid-cols-2 gap-3">
         {useCases.map((uc, i) => (
           <div
@@ -93,21 +92,13 @@ const UseCasesSlide = () => {
                 <ChevronDown className="w-5 h-5 text-white/60" />
               )}
             </div>
-            
+
             {expanded === i && (
               <div className="mt-3 pt-3 border-t border-white/20">
                 <p className="text-white/90 text-sm mb-3">{uc.detail}</p>
-                
-                {uc.citations.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {uc.citations.map((ref, j) => (
-                      <Cite key={j} refKey={ref} />
-                    ))}
-                  </div>
-                )}
-                
+
                 {uc.link && (
-                  <a 
+                  <a
                     href={uc.link}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -117,7 +108,7 @@ const UseCasesSlide = () => {
                     <ExternalLink className="w-3 h-3" /> GDPR Local Guide
                   </a>
                 )}
-                
+
                 <div className="bg-white/20 backdrop-blur rounded-lg p-3 flex items-center gap-3">
                   <div className="text-2xl font-bold text-white">{uc.stat}</div>
                   <div className="text-white/70 text-xs">{uc.statLabel}</div>
@@ -127,7 +118,7 @@ const UseCasesSlide = () => {
           </div>
         ))}
       </div>
-      
+
       <div className="mt-4 bg-gray-900 rounded-xl p-4 text-white">
         <h4 className="font-semibold mb-2 text-sm">Production Tools</h4>
         <div className="grid md:grid-cols-3 gap-3 text-xs">
@@ -140,7 +131,7 @@ const UseCasesSlide = () => {
             <p className="text-gray-400">Commercial agent behavior tracing with real-time monitoring</p>
           </div>
           <div className="bg-white/10 rounded-lg p-2">
-            <div className="font-medium text-gray-200">TransformerLens <Cite refKey="transformerLens" /></div>
+            <div className="font-medium text-gray-200">TransformerLens</div>
             <p className="text-gray-400">Activation patching and causal interventions (2.8k stars)</p>
           </div>
         </div>

@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Layers, Info, CheckCircle, XCircle, ExternalLink, Github } from 'lucide-react';
-import { Slide, Cite } from '../components';
+import { Slide } from '../components';
 
 const ContextCiteSlide = () => {
   const [showAblations, setShowAblations] = useState(false);
   const [activeTab, setActiveTab] = useState('method');
-  
+
   useEffect(() => {
     const timer = setTimeout(() => setShowAblations(true), 500);
     return () => clearTimeout(timer);
   }, []);
-  
+
   return (
-    <Slide className="bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+    <Slide
+      className="bg-gradient-to-br from-blue-50 via-white to-cyan-50"
+      references={['contextCite', 'camab', 'selfCite', 'gim']}
+    >
       <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
         <Layers className="w-8 h-8 text-blue-500" />
         ContextCite: Perturbation-Based Attribution
-        <Cite refKey="contextCite" />
       </h2>
-      
+
       <div className="flex items-center gap-4 mb-4">
         <p className="text-lg text-gray-600">
           MIT/MadryLab (NeurIPS 2024) — Sparse linear surrogate for efficient context attribution
         </p>
         <div className="flex gap-2">
-          <a 
-            href="https://arxiv.org/abs/2409.00729" 
-            target="_blank" 
+          <a
+            href="https://arxiv.org/abs/2409.00729"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
           >
             <ExternalLink className="w-3 h-3" /> arXiv
           </a>
-          <a 
-            href="https://github.com/MadryLab/context-cite" 
-            target="_blank" 
+          <a
+            href="https://github.com/MadryLab/context-cite"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
           >
@@ -42,7 +44,7 @@ const ContextCiteSlide = () => {
           </a>
         </div>
       </div>
-      
+
       {/* Tab Navigation */}
       <div className="flex gap-2 mb-4">
         {[
@@ -64,7 +66,7 @@ const ContextCiteSlide = () => {
           </button>
         ))}
       </div>
-      
+
       {/* Methodology Tab */}
       {activeTab === 'method' && (
         <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -89,7 +91,7 @@ const ContextCiteSlide = () => {
               </li>
             </ol>
           </div>
-          
+
           <div className="bg-white rounded-xl p-4 border border-blue-200 shadow-sm">
             <h3 className="text-lg font-bold text-gray-900 mb-3">Key Efficiency</h3>
             <div className={`text-center transition-all duration-700 ${showAblations ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
@@ -100,19 +102,19 @@ const ContextCiteSlide = () => {
             <div className="mt-3 pt-3 border-t border-gray-100">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Why so few?</h4>
               <p className="text-xs text-gray-600">
-                LASSO's L1 regularization enforces sparsity — most context sources have near-zero influence. 
+                LASSO's L1 regularization enforces sparsity — most context sources have near-zero influence.
                 Random sampling with ~32 ablations provides sufficient signal to identify the few truly influential sources.
               </p>
             </div>
           </div>
         </div>
       )}
-      
+
       {/* LASSO Formulation Tab */}
       {activeTab === 'math' && (
         <div className="bg-white rounded-xl p-4 border border-blue-200 shadow-sm mb-4">
           <h3 className="text-lg font-bold text-gray-900 mb-3">LASSO Surrogate Model</h3>
-          
+
           <div className="bg-gray-50 rounded-lg p-3 mb-3 font-mono text-sm">
             <div className="text-gray-700 mb-2">
               <span className="text-blue-600">minimize</span> ||y - Xβ||² + λ||β||₁
@@ -121,7 +123,7 @@ const ContextCiteSlide = () => {
               where: y = log-probabilities, X = ablation masks, β = attribution scores, λ = sparsity penalty
             </div>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-3 mb-3">
             <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
               <h4 className="font-semibold text-blue-800 mb-1 text-sm">Response Variable (y)</h4>
@@ -129,7 +131,7 @@ const ContextCiteSlide = () => {
                 Log-probability of target response tokens under each masked context. Higher values = better support.
               </p>
             </div>
-            
+
             <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
               <h4 className="font-semibold text-blue-800 mb-1 text-sm">L1 Regularization (λ||β||₁)</h4>
               <p className="text-blue-700 text-xs">
@@ -137,7 +139,7 @@ const ContextCiteSlide = () => {
               </p>
             </div>
           </div>
-          
+
           <div className="pt-3 border-t border-gray-200">
             <h4 className="font-semibold text-gray-700 mb-2 text-sm">Comparison to Gradient Methods</h4>
             <div className="grid md:grid-cols-2 gap-2 text-xs">
@@ -155,13 +157,13 @@ const ContextCiteSlide = () => {
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-600"><strong>No self-repair:</strong> Avoids attention issues <Cite refKey="gim" /></span>
+                <span className="text-gray-600"><strong>No self-repair:</strong> Avoids attention issues</span>
               </div>
             </div>
           </div>
         </div>
       )}
-      
+
       {/* Attribution Types Tab */}
       {activeTab === 'types' && (
         <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -179,7 +181,7 @@ const ContextCiteSlide = () => {
               <strong>Use case:</strong> Citation verification, fact-checking
             </p>
           </div>
-          
+
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
             <h3 className="text-lg font-bold text-blue-800 mb-2">Contributive Attribution</h3>
             <p className="text-blue-700 text-sm mb-2">
@@ -196,12 +198,12 @@ const ContextCiteSlide = () => {
           </div>
         </div>
       )}
-      
+
       {/* Related Work Tab */}
       {activeTab === 'related' && (
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div className="bg-white rounded-xl p-4 border border-purple-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">CAMAB: Multi-Armed Bandit Optimization <Cite refKey="camab" /></h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-3">CAMAB: Multi-Armed Bandit Optimization</h3>
             <p className="text-gray-600 text-sm mb-3">
               Uses Thompson Sampling instead of random ablation selection. More efficient context attribution with fewer queries.
             </p>
@@ -212,9 +214,9 @@ const ContextCiteSlide = () => {
               </p>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-xl p-4 border border-cyan-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">SelfCite: Self-Supervised Alignment <Cite refKey="selfCite" /></h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-3">SelfCite: Self-Supervised Alignment</h3>
             <p className="text-gray-600 text-sm mb-3">
               Uses ablation-based contributive alignment to improve citation quality without human supervision.
             </p>
@@ -227,13 +229,13 @@ const ContextCiteSlide = () => {
           </div>
         </div>
       )}
-      
+
       <div className="bg-blue-900 rounded-xl p-3 text-white">
         <div className="flex items-start gap-3">
           <Info className="w-5 h-5 text-blue-300 flex-shrink-0 mt-0.5" />
           <div className="text-sm">
             <span className="text-blue-200">
-              <strong className="text-white">Key insight:</strong> Corroborative ≠ Contributive. A source may support a claim 
+              <strong className="text-white">Key insight:</strong> Corroborative ≠ Contributive. A source may support a claim
               without being the reason the model generated it. ContextCite handles both via targeted ablation design.
             </span>
           </div>

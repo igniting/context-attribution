@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { Shield, AlertTriangle, CheckCircle, XCircle, Brain, Cpu, ExternalLink } from 'lucide-react';
-import { Slide, Cite } from '../components';
+import { Shield, AlertTriangle, CheckCircle, XCircle, Brain, Cpu } from 'lucide-react';
+import { Slide } from '../components';
 
 const FaithfulnessSlide = () => {
   const [activeMethod, setActiveMethod] = useState('semantic');
-  
+
   return (
-    <Slide className="bg-gradient-to-br from-orange-50 via-white to-red-50">
+    <Slide
+      className="bg-gradient-to-br from-orange-50 via-white to-red-50"
+      references={['semanticIllusion', 'semanticEntropy', 'dda', 'faithLens', 'alce']}
+    >
       <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
         <Shield className="w-8 h-8 text-orange-500" />
         Faithfulness Evaluation: The Semantic Illusion Problem
-        <Cite refKey="semanticIllusion" />
       </h2>
-      
+
       <p className="text-gray-600 mb-4">
         Detecting when generated text is not grounded in retrieved context — a harder problem than benchmarks suggest
       </p>
-      
+
       {/* Method Selector */}
       <div className="flex gap-2 mb-4">
         {[
@@ -37,7 +39,7 @@ const FaithfulnessSlide = () => {
           </button>
         ))}
       </div>
-      
+
       {/* Semantic Illusion */}
       {activeMethod === 'semantic' && (
         <div className="space-y-3 mb-4">
@@ -46,15 +48,15 @@ const FaithfulnessSlide = () => {
               <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0" />
               <div>
                 <h3 className="text-lg font-bold text-red-800 mb-2">
-                  The Semantic Illusion Problem (2025) <Cite refKey="semanticIllusion" />
+                  The Semantic Illusion Problem (2025)
                 </h3>
                 <p className="text-red-700 text-sm">
-                  Embedding-based hallucination detection fails catastrophically on real-world cases, 
+                  Embedding-based hallucination detection fails catastrophically on real-world cases,
                   despite near-perfect performance on synthetic benchmarks.
                 </p>
               </div>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-3 mt-4">
               <div className="bg-white rounded-lg p-3 border border-red-100">
                 <h4 className="font-semibold text-gray-900 text-sm mb-2 flex items-center gap-2">
@@ -75,7 +77,7 @@ const FaithfulnessSlide = () => {
                   Embeddings capture semantic similarity but miss factual contradictions
                 </p>
               </div>
-              
+
               <div className="bg-white rounded-lg p-3 border border-green-100">
                 <h4 className="font-semibold text-gray-900 text-sm mb-2 flex items-center gap-2">
                   <Brain className="w-4 h-4 text-purple-500" />
@@ -97,7 +99,7 @@ const FaithfulnessSlide = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-xl p-3 border border-gray-200">
             <h4 className="font-semibold text-gray-900 text-sm mb-2">Why Embeddings Fail</h4>
             <div className="grid md:grid-cols-2 gap-2 text-xs">
@@ -117,38 +119,38 @@ const FaithfulnessSlide = () => {
           </div>
         </div>
       )}
-      
+
       {/* RAGAS Pipeline */}
       {activeMethod === 'ragas' && (
         <div className="bg-white rounded-xl p-4 border border-orange-200 shadow-sm mb-4">
           <h3 className="text-lg font-bold text-gray-900 mb-3">RAGAS Faithfulness Pipeline</h3>
-          
+
           <div className="grid md:grid-cols-4 gap-2 mb-3">
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-100 text-center">
               <div className="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">1</div>
               <h4 className="font-semibold text-orange-800 text-xs mb-1">Decompose</h4>
               <p className="text-orange-700 text-xs">Break response into atomic statements</p>
             </div>
-            
+
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-100 text-center">
               <div className="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">2</div>
               <h4 className="font-semibold text-orange-800 text-xs mb-1">Verify</h4>
               <p className="text-orange-700 text-xs">Check each statement against context</p>
             </div>
-            
+
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-100 text-center">
               <div className="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">3</div>
               <h4 className="font-semibold text-orange-800 text-xs mb-1">Score</h4>
               <p className="text-orange-700 text-xs">Binary: supported (1) or unsupported (0)</p>
             </div>
-            
+
             <div className="bg-orange-50 rounded-lg p-3 border border-orange-100 text-center">
               <div className="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">4</div>
               <h4 className="font-semibold text-orange-800 text-xs mb-1">Aggregate</h4>
               <p className="text-orange-700 text-xs">Average scores across all statements</p>
             </div>
           </div>
-          
+
           <div className="bg-gray-50 rounded-lg p-3">
             <h4 className="font-semibold text-gray-700 text-sm mb-2">Faithfulness Score Formula</h4>
             <div className="font-mono text-sm text-gray-700 bg-white p-2 rounded border">
@@ -160,12 +162,12 @@ const FaithfulnessSlide = () => {
           </div>
         </div>
       )}
-      
+
       {/* Method Comparison */}
       {activeMethod === 'comparison' && (
         <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-4">
           <h3 className="text-lg font-bold text-gray-900 mb-3">Faithfulness Detection Methods Compared</h3>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -173,7 +175,7 @@ const FaithfulnessSlide = () => {
                   <th className="text-left py-2 px-2 font-semibold text-gray-700">Method</th>
                   <th className="text-left py-2 px-2 font-semibold text-gray-700">Approach</th>
                   <th className="text-center py-2 px-2 font-semibold text-gray-700">Real FPR</th>
-                  <th className="text-left py-2 px-2 font-semibold text-gray-700">Citation</th>
+                  <th className="text-left py-2 px-2 font-semibold text-gray-700">Trade-off</th>
                 </tr>
               </thead>
               <tbody className="text-xs">
@@ -181,44 +183,38 @@ const FaithfulnessSlide = () => {
                   <td className="py-2 px-2 font-medium">Embedding Similarity</td>
                   <td className="py-2 px-2 text-gray-600">Cosine distance threshold</td>
                   <td className="py-2 px-2 text-center"><span className="text-red-600 font-bold">100%</span></td>
-                  <td className="py-2 px-2"><Cite refKey="semanticIllusion" /></td>
+                  <td className="py-2 px-2 text-gray-600">Fast but unreliable</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-2 px-2 font-medium">NLI (TRUE)</td>
                   <td className="py-2 px-2 text-gray-600">T5-11B entailment</td>
                   <td className="py-2 px-2 text-center"><span className="text-orange-600 font-bold">~15%</span></td>
-                  <td className="py-2 px-2"><Cite refKey="alce" /></td>
+                  <td className="py-2 px-2 text-gray-600">Good accuracy, moderate cost</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-2 px-2 font-medium">GPT-4 Reasoning</td>
                   <td className="py-2 px-2 text-gray-600">Chain-of-thought verification</td>
                   <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">7%</span></td>
-                  <td className="py-2 px-2"><Cite refKey="semanticIllusion" /></td>
+                  <td className="py-2 px-2 text-gray-600">Best accuracy, highest cost</td>
                 </tr>
                 <tr className="border-b border-gray-100">
                   <td className="py-2 px-2 font-medium">Semantic Entropy</td>
                   <td className="py-2 px-2 text-gray-600">Sample multiple outputs</td>
                   <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">9-11%</span></td>
-                  <td className="py-2 px-2"><Cite refKey="semanticEntropy" /></td>
+                  <td className="py-2 px-2 text-gray-600">89-91% detection accuracy</td>
                 </tr>
-                <tr className="border-b border-gray-100">
+                <tr>
                   <td className="py-2 px-2 font-medium">DDA</td>
                   <td className="py-2 px-2 text-gray-600">Debias & Denoise Attribution</td>
                   <td className="py-2 px-2 text-center"><span className="text-green-600 font-bold">93.49% AUC</span></td>
-                  <td className="py-2 px-2"><Cite refKey="dda" /></td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-2 font-medium">FaithLens</td>
-                  <td className="py-2 px-2 text-gray-600">Detection + Explanation</td>
-                  <td className="py-2 px-2 text-center"><span className="text-blue-600 font-bold">-</span></td>
-                  <td className="py-2 px-2"><Cite refKey="faithLens" /></td>
+                  <td className="py-2 px-2 text-gray-600">Training data attribution</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       )}
-      
+
       {/* Key Takeaway */}
       <div className="bg-orange-900 rounded-xl p-3 text-white">
         <div className="flex items-start gap-3">
@@ -226,9 +222,8 @@ const FaithfulnessSlide = () => {
           <div className="text-sm">
             <strong className="text-orange-200">Critical Insight:</strong>
             <span className="text-orange-100 ml-1">
-              High performance on synthetic hallucination benchmarks does not transfer to real-world detection. 
+              High performance on synthetic hallucination benchmarks does not transfer to real-world detection.
               Production systems should use reasoning-based verification (NLI or LLM) despite higher cost.
-              Semantic Entropy <Cite refKey="semanticEntropy" /> achieves 89-91% accuracy by measuring uncertainty over meanings.
             </span>
           </div>
         </div>

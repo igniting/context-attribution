@@ -11,21 +11,21 @@ const SlideNavigation = ({ currentSlide, totalSlides, onPrev, onNext, onGoTo }) 
       >
         <ArrowLeft className="w-5 h-5 text-gray-700" />
       </button>
-      
+
       <div className="flex items-center gap-2">
         {Array.from({ length: totalSlides }).map((_, i) => (
           <button
             key={i}
             onClick={() => onGoTo(i)}
             className={`w-2.5 h-2.5 rounded-full transition-all ${
-              currentSlide === i 
-                ? 'bg-indigo-600 w-8' 
+              currentSlide === i
+                ? 'bg-indigo-600 w-8'
                 : 'bg-gray-300 hover:bg-gray-400'
             }`}
           />
         ))}
       </div>
-      
+
       <button
         onClick={onNext}
         disabled={currentSlide === totalSlides - 1}
@@ -33,7 +33,7 @@ const SlideNavigation = ({ currentSlide, totalSlides, onPrev, onNext, onGoTo }) 
       >
         <ArrowRight className="w-5 h-5 text-gray-700" />
       </button>
-      
+
       <span className="text-sm text-gray-500 ml-2 font-medium">
         {currentSlide + 1} / {totalSlides}
       </span>

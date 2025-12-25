@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SlideNavigation } from './components';
 import {
   TitleSlide,
   WhatIsAttributionSlide,
@@ -16,7 +15,7 @@ import {
 
 export default function ContextAttributionPresentation() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  
+
   const slides = [
     TitleSlide,
     WhatIsAttributionSlide,
@@ -30,19 +29,19 @@ export default function ContextAttributionPresentation() {
     UseCasesSlide,
     ConclusionSlide
   ];
-  
+
   const goToSlide = useCallback((index) => {
     setCurrentSlide(Math.max(0, Math.min(index, slides.length - 1)));
   }, [slides.length]);
-  
+
   const nextSlide = useCallback(() => {
     goToSlide(currentSlide + 1);
   }, [currentSlide, goToSlide]);
-  
+
   const prevSlide = useCallback(() => {
     goToSlide(currentSlide - 1);
   }, [currentSlide, goToSlide]);
-  
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -60,29 +59,25 @@ export default function ContextAttributionPresentation() {
         goToSlide(slides.length - 1);
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nextSlide, prevSlide, goToSlide, slides.length]);
-  
+
   const CurrentSlideComponent = slides[currentSlide];
-  
+
   return (
     <div className="min-h-screen bg-white text-gray-900 overflow-hidden">
       {/* Slide Container with transition */}
       <div className="transition-opacity duration-300">
         <CurrentSlideComponent />
       </div>
-      
-      {/* Navigation */}
-      <SlideNavigation
-        currentSlide={currentSlide}
-        totalSlides={slides.length}
-        onPrev={prevSlide}
-        onNext={nextSlide}
-        onGoTo={goToSlide}
-      />
-      
+
+      {/* Slide counter */}
+      <div className="fixed bottom-8 left-8 text-xs text-gray-400">
+        {currentSlide + 1} / {slides.length}
+      </div>
+
       {/* Keyboard hint */}
       <div className="fixed bottom-8 right-8 text-xs text-gray-400">
         Use arrow keys to navigate

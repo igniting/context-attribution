@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { TrendingUp, BookOpen, Database, CheckCircle, XCircle, ExternalLink, Github } from 'lucide-react';
-import { Slide, Cite } from '../components';
+import { Slide } from '../components';
 
 const RAGBenchmarksSlide = () => {
   const [activeDataset, setActiveDataset] = useState('asqa');
-  
+
   const datasets = {
     asqa: {
       name: 'ASQA',
@@ -34,33 +34,35 @@ const RAGBenchmarksSlide = () => {
       challenge: 'Longest answers, most citations needed, GPT-4 fails ~50%'
     }
   };
-  
+
   const activeData = datasets[activeDataset];
-  
+
   return (
-    <Slide className="bg-gradient-to-br from-cyan-50 via-white to-blue-50">
+    <Slide
+      className="bg-gradient-to-br from-cyan-50 via-white to-blue-50"
+      references={['alce', 'longCite', 'start']}
+    >
       <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
         <TrendingUp className="w-8 h-8 text-cyan-500" />
         ALCE Benchmark: Citation Quality Evaluation
-        <Cite refKey="alce" />
       </h2>
-      
+
       <div className="flex items-center gap-4 mb-4">
         <p className="text-gray-600">
           Gao et al., Princeton NLP (EMNLP 2023) — First systematic framework for RAG attribution evaluation
         </p>
         <div className="flex gap-2">
-          <a 
-            href="https://arxiv.org/abs/2305.14627" 
-            target="_blank" 
+          <a
+            href="https://arxiv.org/abs/2305.14627"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
           >
             <ExternalLink className="w-3 h-3" /> arXiv
           </a>
-          <a 
-            href="https://github.com/princeton-nlp/ALCE" 
-            target="_blank" 
+          <a
+            href="https://github.com/princeton-nlp/ALCE"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
           >
@@ -68,7 +70,7 @@ const RAGBenchmarksSlide = () => {
           </a>
         </div>
       </div>
-      
+
       {/* Dataset Selector */}
       <div className="flex gap-2 mb-4">
         {Object.entries(datasets).map(([key, data]) => (
@@ -85,7 +87,7 @@ const RAGBenchmarksSlide = () => {
           </button>
         ))}
       </div>
-      
+
       {/* Dataset Details */}
       <div className="grid md:grid-cols-2 gap-3 mb-4">
         <div className="bg-white rounded-xl p-4 border border-cyan-200 shadow-sm">
@@ -95,18 +97,18 @@ const RAGBenchmarksSlide = () => {
             <span className="text-xs text-gray-500">({activeData.type})</span>
           </div>
           <p className="text-sm text-gray-600 mb-2">{activeData.description}</p>
-          
+
           <div className="bg-gray-50 rounded-lg p-2 mb-2">
             <div className="text-xs text-gray-500 mb-1">Example Query:</div>
             <div className="text-sm text-gray-700 font-mono">{activeData.example}</div>
           </div>
-          
+
           <div className="text-xs">
             <span className="font-semibold text-gray-700">Key Challenge: </span>
             <span className="text-gray-600">{activeData.challenge}</span>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-xl p-4 border border-cyan-200 shadow-sm">
           <h3 className="text-lg font-bold text-gray-900 mb-2">Evaluation Metrics</h3>
           <div className="space-y-1.5 mb-3">
@@ -117,27 +119,27 @@ const RAGBenchmarksSlide = () => {
               </div>
             ))}
           </div>
-          
+
           {activeDataset === 'eli5' && (
             <div className="pt-2 border-t border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="text-2xl font-bold text-orange-600">~50%</div>
                 <div className="text-xs text-gray-600">
-                  GPT-4 lacks complete<br />citation support <Cite refKey="alce" />
+                  GPT-4 lacks complete<br />citation support
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
-      
+
       {/* NLI-Based Evaluation */}
       <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-4">
         <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-indigo-600" />
           NLI-Based Citation Verification (TRUE Model)
         </h3>
-        
+
         <div className="grid md:grid-cols-3 gap-2">
           <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-100">
             <h4 className="font-semibold text-indigo-800 text-sm mb-1">Model Architecture</h4>
@@ -145,7 +147,7 @@ const RAGBenchmarksSlide = () => {
               <strong>TRUE:</strong> T5-11B fine-tuned on NLI. Checks if cited passage <em>entails</em> the generated statement.
             </p>
           </div>
-          
+
           <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-100">
             <h4 className="font-semibold text-indigo-800 text-sm mb-1">Citation Recall</h4>
             <p className="text-indigo-700 text-xs">
@@ -153,7 +155,7 @@ const RAGBenchmarksSlide = () => {
               <code className="bg-white px-1 rounded ml-1">|supported| / |statements|</code>
             </p>
           </div>
-          
+
           <div className="bg-indigo-50 rounded-lg p-3 border border-indigo-100">
             <h4 className="font-semibold text-indigo-800 text-sm mb-1">Citation Precision</h4>
             <p className="text-indigo-700 text-xs">
@@ -162,25 +164,7 @@ const RAGBenchmarksSlide = () => {
           </div>
         </div>
       </div>
-      
-      {/* Related Work */}
-      <div className="grid md:grid-cols-2 gap-3 mb-4">
-        <div className="bg-purple-50 rounded-lg p-3 border border-purple-200">
-          <h4 className="font-semibold text-purple-800 text-sm mb-1">LongCite <Cite refKey="longCite" /></h4>
-          <p className="text-purple-700 text-xs">
-            Fine-tuned models (LongCite-8B/9B) for sentence-level citation generation. 
-            <strong> +6.4% citation F1</strong> over GPT-4o. Dataset: LongCite-45k.
-          </p>
-        </div>
-        <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-          <h4 className="font-semibold text-emerald-800 text-sm mb-1">START Framework <Cite refKey="start" /></h4>
-          <p className="text-emerald-700 text-xs">
-            Self-improving citation through synthetic data + preference optimization.
-            <strong> +25.13% improvement</strong> without human annotations.
-          </p>
-        </div>
-      </div>
-      
+
       {/* Key Findings */}
       <div className="bg-cyan-900 rounded-xl p-3 text-white">
         <h4 className="font-semibold mb-2 text-sm">Key ALCE Findings</h4>

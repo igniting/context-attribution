@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const Citation = ({ id, authors, title, venue, year, url, children }) => {
   const [showTooltip, setShowTooltip] = useState(false);
-  
+
   return (
     <span className="relative inline-block">
       <a
@@ -15,7 +15,7 @@ const Citation = ({ id, authors, title, venue, year, url, children }) => {
       >
         {children || `[${id}]`}
       </a>
-      
+
       {showTooltip && (
         <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg shadow-xl pointer-events-none">
           <div className="font-semibold text-gray-100 mb-1">{title}</div>
@@ -214,7 +214,7 @@ export const CITATIONS = {
 export const Cite = ({ refKey }) => {
   const citation = CITATIONS[refKey];
   if (!citation) return <span className="text-red-500">[?]</span>;
-  
+
   return (
     <Citation {...citation}>
       [{citation.id}]
