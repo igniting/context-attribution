@@ -1,283 +1,234 @@
-import React, { useState } from 'react';
-import { Zap, CheckCircle, XCircle, AlertTriangle, ArrowRight, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Zap, RotateCcw, ExternalLink, ArrowDown, Layers } from 'lucide-react';
 import { Slide } from '../components';
 
 const IntegratedGradientsSlide = () => {
-  const [activeTab, setActiveTab] = useState('axioms');
+  const [step, setStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const maxSteps = 10;
+
+  // Example from Captum tutorial - token-level attribution
+  const prompt = "Dave lives in Palm Coast, FL and is a lawyer.";
+  const tokens = [
+    { word: 'Dave', score: 0.08 },
+    { word: 'lives', score: 0.42 },
+    { word: 'in', score: 0.05 },
+    { word: 'Palm', score: 0.28 },
+    { word: 'Coast', score: 0.22 },
+    { word: ',', score: 0.02 },
+    { word: 'FL', score: 0.15 },
+    { word: 'and', score: 0.03 },
+    { word: 'is', score: 0.04 },
+    { word: 'a', score: 0.02 },
+    { word: 'lawyer', score: 0.35 },
+    { word: '.', score: 0.01 },
+  ];
+
+  const target = "playing golf, hiking, and cooking.";
+
+  // Auto-play animation
+  useEffect(() => {
+    if (isPlaying && step < maxSteps) {
+      const timer = setTimeout(() => setStep(s => s + 1), 300);
+      return () => clearTimeout(timer);
+    } else if (step >= maxSteps) {
+      setIsPlaying(false);
+    }
+  }, [isPlaying, step]);
+
+  const resetAnimation = () => {
+    setStep(0);
+    setIsPlaying(true);
+  };
+
+  const getInterpolatedScore = (token) => {
+    const progress = step / maxSteps;
+    return token.score * progress;
+  };
+
+  const maxScore = Math.max(...tokens.map(t => t.score));
+
+  const getBarColor = (score, maxS) => {
+    const ratio = score / maxS;
+    if (ratio > 0.7) return 'bg-amber-500';
+    if (ratio > 0.4) return 'bg-amber-400';
+    if (ratio > 0.2) return 'bg-amber-300';
+    return 'bg-gray-300';
+  };
 
   return (
-    <Slide
-      className="bg-gradient-to-br from-amber-50 via-white to-orange-50"
-      references={['integratedGradients', 'gim', 'contextCite']}
-    >
+    <Slide className="bg-gradient-to-br from-amber-50 via-white to-orange-50">
       <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
         <Zap className="w-8 h-8 text-amber-500" />
-        Gradient-Based Attribution: Mathematical Foundations
+        Gradient-Based Attribution
       </h2>
 
       <p className="text-gray-600 mb-4">
-        Sundararajan et al. (ICML 2017) — Axiomatic approach to feature attribution
+        Compute gradients of output log-probability with respect to embedding layer.
+        Using <code className="bg-gray-100 px-1 rounded text-sm">LayerIntegratedGradients</code> on <code className="bg-gray-100 px-1 rounded text-sm">model.embed_tokens</code>
       </p>
 
-      {/* Tab Navigation */}
-      <div className="flex gap-2 mb-4">
-        {[
-          { id: 'axioms', label: 'Axioms' },
-          { id: 'formula', label: 'IG Formulation' },
-          { id: 'selfrepair', label: 'Attention Self-Repair' },
-          { id: 'gim', label: 'GIM Framework' }
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.id
-                ? 'bg-amber-600 text-white'
-                : 'bg-white border border-amber-200 text-amber-700 hover:bg-amber-50'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+      <div className="grid md:grid-cols-5 gap-4 mb-4">
+        {/* Left: Path visualization */}
+        <div className="md:col-span-2 bg-white rounded-xl border border-amber-200 p-4 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-gray-900 text-sm">Integration Path</h3>
+            {step >= maxSteps ? (
+              <button
+                onClick={resetAnimation}
+                className="px-2 py-1 bg-amber-500 text-white text-xs rounded hover:bg-amber-600 flex items-center gap-1"
+              >
+                <RotateCcw className="w-3 h-3" /> Replay
+              </button>
+            ) : (
+              <div className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">
+                α = {(step / maxSteps).toFixed(1)}
+              </div>
+            )}
+          </div>
+
+          {/* Path visualization */}
+          <div className="relative mb-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-center w-full">
+                <div className="text-gray-500 text-xs mb-1">Baseline (α=0)</div>
+                <code className="text-xs text-gray-600">Zero embeddings</code>
+              </div>
+              
+              <div className="relative w-full h-32">
+                {/* Gradient path */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gray-200 -translate-x-1/2" />
+                
+                {/* Current position indicator */}
+                <div 
+                  className="absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg transition-all duration-300"
+                  style={{ top: `${(step / maxSteps) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                >
+                  ∇
+                </div>
+                
+                {/* Path markers */}
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full transition-colors ${
+                      (i / 4) <= (step / maxSteps) ? 'bg-amber-400' : 'bg-gray-300'
+                    }`}
+                    style={{ top: `${(i / 4) * 100}%`, transform: 'translate(-50%, -50%)' }}
+                  />
+                ))}
+              </div>
+              
+              <div className="bg-amber-100 rounded-lg px-3 py-2 text-sm text-center w-full border border-amber-200">
+                <div className="text-amber-600 text-xs mb-1">Input (α=1)</div>
+                <code className="text-xs text-amber-700">Actual embeddings</code>
+              </div>
+            </div>
+          </div>
+
+          {/* Formula */}
+          <div className="bg-gray-50 rounded-lg p-3 text-xs font-mono text-gray-700">
+            <div className="text-amber-600 mb-1">// Sum gradients along path</div>
+            IG(x) = (x - x') × ∫₀¹ ∇F(x' + α(x-x')) dα
+          </div>
+        </div>
+
+        {/* Right: Token attributions */}
+        <div className="md:col-span-3 bg-white rounded-xl border border-amber-200 p-4 shadow-sm">
+          <h3 className="font-bold text-gray-900 text-sm mb-2">Token Attribution (Sequence Level)</h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Attribution scores summed across all output tokens
+          </p>
+
+          {/* Token bars */}
+          <div className="space-y-2 mb-4">
+            {tokens.map((token, idx) => {
+              const score = getInterpolatedScore(token);
+              const barWidth = (score / maxScore) * 100;
+              
+              return (
+                <div key={idx} className="flex items-center gap-2">
+                  <div className="w-16 text-right font-mono text-xs text-gray-600 truncate">
+                    {token.word}
+                  </div>
+                  <div className="flex-1 bg-gray-100 rounded h-5 overflow-hidden">
+                    <div
+                      className={`h-full ${getBarColor(token.score, maxScore)} transition-all duration-200 rounded flex items-center justify-end pr-1`}
+                      style={{ width: `${Math.max(barWidth, 2)}%` }}
+                    >
+                      {barWidth > 15 && (
+                        <span className="text-xs text-white font-medium">
+                          {(score * 100).toFixed(0)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-10 text-xs text-gray-400 text-right">
+                    {(score * 100).toFixed(0)}%
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Target */}
+          <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+            <div className="text-xs text-gray-500 mb-1">Target output:</div>
+            <div className="text-sm text-gray-800">"{target}"</div>
+          </div>
+        </div>
       </div>
 
-      {/* Axioms Tab */}
-      {activeTab === 'axioms' && (
-        <div className="space-y-3 mb-4">
-          <div className="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Attribution Axioms (Sundararajan et al.)</h3>
-            <div className="grid md:grid-cols-2 gap-3">
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
-                <h4 className="font-semibold text-amber-800 text-sm mb-2 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> Sensitivity
-                </h4>
-                <p className="text-amber-700 text-xs mb-2">
-                  If changing one feature changes the output, that feature must receive non-zero attribution.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  F(x) ≠ F(x') ⟹ Attribution(xᵢ) ≠ 0
-                </div>
-              </div>
-
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
-                <h4 className="font-semibold text-amber-800 text-sm mb-2 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> Implementation Invariance
-                </h4>
-                <p className="text-amber-700 text-xs mb-2">
-                  Two networks with identical outputs must have identical attributions, regardless of implementation.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  F₁(x) = F₂(x) ∀x ⟹ Attr₁ = Attr₂
-                </div>
-              </div>
-
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
-                <h4 className="font-semibold text-amber-800 text-sm mb-2 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> Completeness
-                </h4>
-                <p className="text-amber-700 text-xs mb-2">
-                  Sum of all attributions equals the difference between output at input vs baseline.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  Σᵢ Attrᵢ(x) = F(x) − F(x')
-                </div>
-              </div>
-
-              <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
-                <h4 className="font-semibold text-amber-800 text-sm mb-2 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> Linearity
-                </h4>
-                <p className="text-amber-700 text-xs mb-2">
-                  For linear combinations of models, attributions combine linearly.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  Attr(αF + βG) = αAttr(F) + βAttr(G)
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Key insight */}
+      {step >= maxSteps && (
+        <div className="bg-amber-50 rounded-xl p-4 border border-amber-200 mb-4">
+          <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+            <Layers className="w-4 h-4 text-amber-600" />
+            Interpretation
+          </h3>
+          <p className="text-gray-700 text-sm">
+            <span className="font-medium text-amber-700">"lives"</span> has highest attribution (42%) — the verb strongly signals the model to predict personal activities.
+            <span className="font-medium text-amber-700"> "lawyer"</span> and <span className="font-medium text-amber-700">"Palm Coast"</span> follow, linking occupation and location to predicted hobbies.
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Note: Attribution varies by layer — explore <code className="bg-gray-100 px-1 rounded">model.model.layers[N]</code> for different perspectives.
+          </p>
         </div>
       )}
 
-      {/* Formula Tab */}
-      {activeTab === 'formula' && (
-        <div className="space-y-3 mb-4">
-          <div className="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Integrated Gradients Formulation</h3>
-
-            <div className="bg-gray-900 rounded-lg p-4 mb-4 font-mono text-sm overflow-x-auto">
-              <div className="text-amber-400 mb-2">// Integrated Gradients for feature i</div>
-              <div className="text-white">
-                IG<sub>i</sub>(x) = (x<sub>i</sub> − x'<sub>i</sub>) × <span className="text-cyan-400">∫</span><sup className="text-gray-400">1</sup><sub className="text-gray-400">α=0</sub>{' '}
-                <span className="text-green-400">∂F(x' + α(x − x'))</span> / <span className="text-green-400">∂x<sub>i</sub></span> dα
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-3">
-              <div className="bg-gray-50 rounded-lg p-3">
-                <h4 className="font-semibold text-gray-800 text-sm mb-1">x'</h4>
-                <p className="text-gray-600 text-xs">
-                  Baseline input (e.g., zero embedding, empty string, or masked input)
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-3">
-                <h4 className="font-semibold text-gray-800 text-sm mb-1">α ∈ [0, 1]</h4>
-                <p className="text-gray-600 text-xs">
-                  Interpolation parameter along path from baseline to input
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-3">
-                <h4 className="font-semibold text-gray-800 text-sm mb-1">∂F/∂xᵢ</h4>
-                <p className="text-gray-600 text-xs">
-                  Gradient of model output with respect to feature i
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-gray-200">
-              <h4 className="font-semibold text-gray-700 text-sm mb-2">Practical Approximation (Riemann Sum)</h4>
-              <div className="bg-gray-50 rounded-lg p-3 font-mono text-xs">
-                IG<sub>i</sub>(x) ≈ (x<sub>i</sub> − x'<sub>i</sub>) × (1/m) × Σ<sub>k=1</sub><sup>m</sup> ∂F(x' + (k/m)(x − x')) / ∂x<sub>i</sub>
-              </div>
-              <p className="text-gray-500 text-xs mt-2">
-                Typically m = 20-300 steps. More steps = better approximation but higher cost.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Self-Repair Tab */}
-      {activeTab === 'selfrepair' && (
-        <div className="space-y-3 mb-4">
-          <div className="bg-red-50 rounded-xl p-4 border border-red-200">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0" />
-              <div>
-                <h3 className="text-lg font-bold text-red-800 mb-2">
-                  The Attention Self-Repair Problem
-                </h3>
-                <p className="text-red-700 text-sm">
-                  Gradient-based attribution fails on transformers because attention mechanisms 
-                  <strong> compensate when individual components are ablated</strong>.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-3">Why Gradients Fail on Transformers</h3>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold text-gray-700 text-sm mb-2">Softmax Saturation</h4>
-                <p className="text-gray-600 text-xs mb-2">
-                  When attention weights approach 0 or 1, gradients vanish due to softmax saturation,
-                  hiding the true importance of attention heads.
-                </p>
-                <div className="bg-gray-50 rounded-lg p-2 font-mono text-xs">
-                  ∂softmax(z)/∂zᵢ → 0 as zᵢ → ±∞
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-700 text-sm mb-2">Redundancy & Compensation</h4>
-                <p className="text-gray-600 text-xs mb-2">
-                  When one attention head is ablated, other heads adjust to compensate,
-                  making individual head importance appear lower than it is.
-                </p>
-                <div className="bg-gray-50 rounded-lg p-2 font-mono text-xs">
-                  Ablate(head<sub>j</sub>) → Σ<sub>i≠j</sub> head<sub>i</sub> compensates
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-gray-200">
-              <div className="flex items-center gap-2 text-sm">
-                <XCircle className="w-4 h-4 text-red-500" />
-                <span className="text-gray-700">
-                  <strong>Result:</strong> Standard IG attributions do not faithfully reflect component importance in LLMs
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* GIM Tab */}
-      {activeTab === 'gim' && (
-        <div className="space-y-3 mb-4">
-          <div className="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-bold text-gray-900">GIM: Gradient Interaction Modifications (2025)</h3>
-              <a
-                href="https://arxiv.org/abs/2505.17630"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-              >
-                <ExternalLink className="w-3 h-3" /> arXiv
-              </a>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
-                <h4 className="font-semibold text-emerald-800 text-sm mb-2">Temperature-Adjusted Gradients</h4>
-                <p className="text-emerald-700 text-xs mb-2">
-                  Applies temperature scaling during gradient computation to prevent saturation.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  softmax(z/τ) where τ {">"} 1 prevents saturation
-                </div>
-              </div>
-
-              <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-100">
-                <h4 className="font-semibold text-emerald-800 text-sm mb-2">LayerNorm Freezing</h4>
-                <p className="text-emerald-700 text-xs mb-2">
-                  Freezes LayerNorm parameters during gradient computation to prevent cancellation.
-                </p>
-                <div className="bg-white rounded p-2 font-mono text-xs text-gray-700">
-                  ∂LN/∂x computed with frozen μ, σ
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-3">
-              <h4 className="font-semibold text-gray-700 text-sm mb-2">Evaluation Results</h4>
-              <div className="grid md:grid-cols-3 gap-2 text-xs">
-                <div className="bg-white rounded p-2 border">
-                  <div className="font-medium text-gray-800">Gemma 2B/9B</div>
-                  <div className="text-emerald-600">Significant improvement over IG</div>
-                </div>
-                <div className="bg-white rounded p-2 border">
-                  <div className="font-medium text-gray-800">LLAMA 1B/3B/8B</div>
-                  <div className="text-emerald-600">Better faithfulness scores</div>
-                </div>
-                <div className="bg-white rounded p-2 border">
-                  <div className="font-medium text-gray-800">Qwen 1.5B/3B</div>
-                  <div className="text-emerald-600">Outperforms existing methods</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="bg-amber-900 rounded-xl p-3 text-white">
-        <div className="flex items-start gap-3">
-          <Zap className="w-5 h-5 text-amber-300 flex-shrink-0 mt-0.5" />
-          <div className="text-sm">
-            <strong className="text-amber-200">Key Takeaway:</strong>
-            <span className="text-amber-100 ml-1">
-              Standard Integrated Gradients satisfy theoretical axioms but fail on transformers due to 
-              self-repair. GIM's temperature adjustment and LayerNorm freezing restore faithfulness.
-            </span>
-          </div>
-        </div>
+      {/* Key papers */}
+      <div className="flex flex-wrap gap-2">
+        <span className="text-sm text-gray-500">Key Papers:</span>
+        <a
+          href="https://arxiv.org/abs/1703.01365"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded hover:bg-amber-200"
+        >
+          Integrated Gradients (ICML 2017)
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://arxiv.org/abs/2505.17630"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded hover:bg-amber-200"
+        >
+          GIM Framework (2025)
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://captum.ai/tutorials/Llama2_LLM_Attribution"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+        >
+          Captum Tutorial
+          <ExternalLink className="w-3 h-3" />
+        </a>
       </div>
     </Slide>
   );
 };
 
 export default IntegratedGradientsSlide;
-

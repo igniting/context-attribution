@@ -3,6 +3,7 @@ import {
   TitleSlide,
   WhatIsAttributionSlide,
   MethodsOverviewSlide,
+  PerturbationAttributionSlide,
   IntegratedGradientsSlide,
   ContextCiteSlide,
   CircuitTracingSlide,
@@ -23,7 +24,8 @@ export default function ContextAttributionPresentation() {
     TitleSlide,
     WhatIsAttributionSlide,
     MethodsOverviewSlide,
-    IntegratedGradientsSlide,      // New: Deep dive on gradient methods
+    PerturbationAttributionSlide,   // Perturbation-based: Feature Ablation, Shapley
+    IntegratedGradientsSlide,       // Gradient-based: Layer Integrated Gradients
     ContextCiteSlide,
     CircuitTracingSlide,
     TrainingDataAttributionSlide,  // New: Training data attribution

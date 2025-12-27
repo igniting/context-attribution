@@ -1,6 +1,7 @@
 export { default as TitleSlide } from './TitleSlide';
 export { default as WhatIsAttributionSlide } from './WhatIsAttributionSlide';
 export { default as MethodsOverviewSlide } from './MethodsOverviewSlide';
+export { default as PerturbationAttributionSlide } from './PerturbationAttributionSlide';
 export { default as IntegratedGradientsSlide } from './IntegratedGradientsSlide';
 export { default as ContextCiteSlide } from './ContextCiteSlide';
 export { default as CircuitTracingSlide } from './CircuitTracingSlide';

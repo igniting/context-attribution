@@ -1,118 +1,166 @@
 import React from 'react';
-import { Zap, Layers, GitBranch, Database, Eye, Target, ExternalLink } from 'lucide-react';
+import { Layers, Zap, Target, ExternalLink, Code } from 'lucide-react';
 import { Slide } from '../components';
 
 const MethodsOverviewSlide = () => {
-  const methods = [
-    {
-      name: 'Gradient-Based',
-      icon: Zap,
-      color: 'amber',
-      desc: 'Computes attribution by analyzing how gradients flow through the network. Integrated Gradients satisfies key axioms like sensitivity and implementation invariance, though attention self-repair can invalidate results.',
-      papers: [
-        { name: 'Integrated Gradients', venue: 'ICML 2017', url: 'https://arxiv.org/abs/1703.01365' },
-        { name: 'GIM Framework', venue: '2025', url: 'https://arxiv.org/abs/2505.17630' },
-      ]
-    },
-    {
-      name: 'Perturbation-Based',
-      icon: Layers,
-      color: 'blue',
-      desc: 'Measures importance by removing or modifying input parts and observing output changes. Model-agnostic and works with any LLM API—ContextCite needs only ~32 ablations even with hundreds of sources.',
-      papers: [
-        { name: 'ContextCite', venue: 'NeurIPS 2024', url: 'https://arxiv.org/abs/2409.00729' },
-        { name: 'CAMAB', venue: '2025', url: 'https://arxiv.org/html/2506.19977' },
-        { name: 'SelfCite', venue: 'ICML 2025', url: 'https://arxiv.org/abs/2502.09604' },
-      ]
-    },
-    {
-      name: 'Circuit Tracing',
-      icon: GitBranch,
-      color: 'purple',
-      desc: 'Maps interpretable features through model layers using sparse autoencoders. Anthropic\'s approach uses 30M features to trace multi-step reasoning paths like "Dallas → Texas → Austin".',
-      papers: [
-        { name: 'Attribution Graphs', venue: 'Anthropic 2025', url: 'https://transformer-circuits.pub/2025/attribution-graphs/biology.html' },
-        { name: 'circuit-tracer', venue: 'Open Source', url: 'https://github.com/anthropics/circuit-tracer' },
-      ]
-    },
-    {
-      name: 'Training Data Attribution',
-      icon: Database,
-      color: 'emerald',
-      desc: 'Traces predictions back to influential training examples. Traditional influence functions scale poorly to LLMs—LoGra achieves 6,500x speedup, though BM25 often outperforms for factual attribution.',
-      papers: [
-        { name: 'LoGra', venue: 'ICLR 2025', url: 'https://arxiv.org/abs/2405.13954' },
-        { name: 'DDA', venue: '2024', url: 'https://arxiv.org/abs/2410.01285' },
-      ]
-    },
-    {
-      name: 'Self-Reflection',
-      icon: Eye,
-      color: 'rose',
-      desc: 'Model generates special tokens to assess its own retrieval and generation quality at runtime. Self-RAG achieves 55.8% accuracy on PopQA vs 24.4% baseline through [Retrieve], [IsRel], [IsSup] tokens.',
-      papers: [
-        { name: 'Self-RAG', venue: 'ICLR 2024', url: 'https://arxiv.org/abs/2310.11511' },
-        { name: 'START', venue: 'EMNLP 2024', url: 'https://arxiv.org/abs/2410.13298' },
-        { name: 'LongCite', venue: '2024', url: 'https://arxiv.org/abs/2409.02897' },
-      ]
-    }
-  ];
-
-  const colorClasses = {
-    amber: { bg: 'bg-amber-50', border: 'border-amber-200', icon: 'bg-amber-500', text: 'text-amber-700', badge: 'bg-amber-100 text-amber-800' },
-    blue: { bg: 'bg-blue-50', border: 'border-blue-200', icon: 'bg-blue-500', text: 'text-blue-700', badge: 'bg-blue-100 text-blue-800' },
-    purple: { bg: 'bg-purple-50', border: 'border-purple-200', icon: 'bg-purple-500', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-800' },
-    emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', icon: 'bg-emerald-500', text: 'text-emerald-700', badge: 'bg-emerald-100 text-emerald-800' },
-    rose: { bg: 'bg-rose-50', border: 'border-rose-200', icon: 'bg-rose-500', text: 'text-rose-700', badge: 'bg-rose-100 text-rose-800' },
-  };
-
   return (
-    <Slide
-      className="bg-white"
-    >
-      <h2 className="text-3xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+    <Slide className="bg-white">
+      <h2 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
         <Target className="w-8 h-8 text-indigo-500" />
         Core Attribution Methods
       </h2>
 
-      <div className="space-y-3">
-        {methods.map((method, idx) => {
-          const colors = colorClasses[method.color];
-          return (
-            <div
-              key={idx}
-              className={`${colors.bg} ${colors.border} border rounded-xl p-4`}
-            >
-              <div className="flex items-start gap-3">
-                <div className={`${colors.icon} p-2 rounded-lg flex-shrink-0`}>
-                  <method.icon className="w-5 h-5 text-white" />
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-3 mb-1.5">
-                    <h3 className="font-bold text-gray-900">{method.name}</h3>
-                    <div className="flex flex-wrap gap-1.5 justify-end">
-                      {method.papers.map((paper, i) => (
-                        <a
-                          key={i}
-                          href={paper.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${colors.badge} hover:opacity-80 transition-opacity`}
-                        >
-                          {paper.name}
-                          <span className="opacity-60">({paper.venue})</span>
-                          <ExternalLink className="w-3 h-3 opacity-50" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 text-sm leading-relaxed">{method.desc}</p>
-                </div>
-              </div>
+      <p className="text-gray-600 mb-4">
+        Based on <a href="https://captum.ai" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline font-medium">Captum</a>'s LLM Attribution API — two fundamental approaches to understanding model behavior.
+      </p>
+
+      <div className="grid md:grid-cols-2 gap-4 mb-4">
+        {/* Perturbation-Based */}
+        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-200">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="bg-blue-500 p-2.5 rounded-lg">
+              <Layers className="w-6 h-6 text-white" />
             </div>
-          );
-        })}
+            <div>
+              <h3 className="font-bold text-gray-900 text-lg">Perturbation-Based</h3>
+              <code className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">LLMAttribution</code>
+            </div>
+          </div>
+          
+          <p className="text-gray-700 text-sm mb-4">
+            Remove or modify input features and observe how output probability changes. 
+            <span className="font-medium text-blue-700"> Model-agnostic</span> — works with any LLM API.
+          </p>
+
+          <div className="space-y-2 mb-4">
+            <div className="bg-white/70 rounded-lg p-3 border border-blue-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">Feature Ablation</div>
+              <p className="text-gray-600 text-xs">Replace each feature with baseline, measure output difference</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-blue-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">Shapley Values</div>
+              <p className="text-gray-600 text-xs">Game-theoretic fair attribution across all feature coalitions</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-blue-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">LIME / KernelSHAP</div>
+              <p className="text-gray-600 text-xs">Train interpretable surrogate model on perturbed samples</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-blue-700">
+            <span className="font-medium">Best for:</span>
+            <span>Black-box models, API-only access, production use</span>
+          </div>
+        </div>
+
+        {/* Gradient-Based */}
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="bg-amber-500 p-2.5 rounded-lg">
+              <Zap className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-900 text-lg">Gradient-Based</h3>
+              <code className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">LLMGradientAttribution</code>
+            </div>
+          </div>
+          
+          <p className="text-gray-700 text-sm mb-4">
+            Compute gradients of output with respect to input embeddings.
+            <span className="font-medium text-amber-700"> Requires model access</span> — single backward pass.
+          </p>
+
+          <div className="space-y-2 mb-4">
+            <div className="bg-white/70 rounded-lg p-3 border border-amber-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">Layer Integrated Gradients</div>
+              <p className="text-gray-600 text-xs">Integrate gradients along path from baseline to input</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-amber-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">Layer Gradient × Activation</div>
+              <p className="text-gray-600 text-xs">Element-wise product of gradients and layer activations</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-amber-100">
+              <div className="font-medium text-gray-900 text-sm mb-1">Layer GradientSHAP</div>
+              <p className="text-gray-600 text-xs">SHAP approximation via gradient sampling</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-amber-700">
+            <span className="font-medium">Best for:</span>
+            <span>Open-weight models, research, deep analysis</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Interpretable Input Types */}
+      <div className="bg-gray-50 rounded-xl p-4 border border-gray-200 mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Code className="w-5 h-5 text-gray-600" />
+          <h3 className="font-bold text-gray-900">Interpretable Input Types</h3>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-lg p-3 border border-gray-200">
+            <code className="text-sm font-medium text-purple-700">TextTokenInput</code>
+            <p className="text-gray-600 text-xs mt-1">
+              Attribute to individual tokens. Good for fine-grained analysis but tokens may be sub-words.
+            </p>
+            <div className="mt-2 font-mono text-xs bg-gray-100 p-2 rounded text-gray-700">
+              "Dave" → ["D", "ave"] (tokenizer splits)
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-3 border border-gray-200">
+            <code className="text-sm font-medium text-purple-700">TextTemplateInput</code>
+            <p className="text-gray-600 text-xs mt-1">
+              Attribute to semantic segments (words, phrases). Define custom baselines for each.
+            </p>
+            <div className="mt-2 font-mono text-xs bg-gray-100 p-2 rounded text-gray-700">
+              {"{name}"} lives in {"{city}"}, {"{state}"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Key Papers */}
+      <div className="flex flex-wrap gap-2">
+        <span className="text-sm text-gray-500">Key Papers:</span>
+        <a
+          href="https://arxiv.org/abs/2312.05491"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-indigo-100 text-indigo-800 rounded hover:bg-indigo-200"
+        >
+          Captum LLM Attribution (2023)
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://arxiv.org/abs/1703.01365"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded hover:bg-amber-200"
+        >
+          Integrated Gradients (ICML 2017)
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://arxiv.org/abs/1705.07874"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
+        >
+          SHAP (NeurIPS 2017)
+          <ExternalLink className="w-3 h-3" />
+        </a>
+        <a
+          href="https://captum.ai/tutorials/Llama2_LLM_Attribution"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+        >
+          Llama2 Tutorial
+          <ExternalLink className="w-3 h-3" />
+        </a>
       </div>
     </Slide>
   );
