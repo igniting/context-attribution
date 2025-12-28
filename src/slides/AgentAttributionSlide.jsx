@@ -5,23 +5,22 @@ import { Slide } from '../components';
 const AgentAttributionSlide = () => {
   const [activeTab, setActiveTab] = useState('loo');
 
-  // Real example data from our experiments
+  // Real example data from unified tool model experiments
   const toolSelectionExample = {
     toolCall: "order_lookup({'order_id': 'ORDER-98234'})",
     sources: [
-      { type: 'History', text: "Yes, it's ORDER-98234...", score: 16.73, rank: 1 },
-      { type: 'History', text: "Let me look that up for you...", score: 5.28, rank: 2 },
-      { type: 'RAG', text: "Return Policy", score: 1.81, rank: 3 },
-      { type: 'History', text: "I ordered a laptop last month...", score: 1.64, rank: 4 },
+      { type: 'History', text: "Yes, it's ORDER-98234...", score: 22.99, rank: 1 },
+      { type: 'Tool', text: "knowledge_search (RAG)", score: 11.72, rank: 2 },
+      { type: 'History', text: "Hello! Could you provide...", score: -0.17, rank: 3 },
+      { type: 'History', text: "Let me look that up...", score: -0.46, rank: 4 },
     ]
   };
 
   const responseExample = {
-    response: "Based on the order information, delivery was on Dec 12...",
+    response: "According to our return policy, electronics have a 15-day window...",
     sources: [
-      { type: 'Tool', text: "order_lookup result", score: 58.19, rank: 1 },
-      { type: 'RAG', text: "Return Policy", score: 8.98, rank: 2 },
-      { type: 'RAG', text: "FAQ: Damaged Items", score: 2.23, rank: 3 },
+      { type: 'Tool', text: "knowledge_search (RAG)", score: 28.39, rank: 1 },
+      { type: 'Tool', text: "order_lookup (API)", score: 5.73, rank: 2 },
     ]
   };
 
@@ -42,14 +41,9 @@ const AgentAttributionSlide = () => {
           <Bot className="w-8 h-8 text-blue-600" />
           Agent Attribution: Tools + RAG
         </h2>
-        <a
-          href="https://github.com/your-org/agent-attribution-demo"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-        >
-          <Github className="w-3 h-3" /> Demo
-        </a>
+        <span className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
+          <Github className="w-3 h-3" /> demos/agent_attribution.py
+        </span>
       </div>
 
       <p className="text-gray-600 mb-4">
@@ -286,10 +280,10 @@ const AgentAttributionSlide = () => {
         <div className="flex items-start gap-3">
           <Bot className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
           <div className="text-sm">
-            <strong className="text-blue-300">Agent Attribution Stack:</strong>
+            <strong className="text-blue-300">Unified Tool Model:</strong>
             <span className="text-slate-200 ml-1">
-              Log-prob LOO provides fast, reliable attribution for both tool selection (history + RAG → tool call) and 
-              response generation (tool output + RAG → answer). Works across model architectures with consistent relative rankings.
+              RAG is just another tool (knowledge_search). Log-prob LOO provides fast O(n) attribution for both 
+              tool selection and response generation. Rankings are consistent across Qwen, Gemma, and Llama.
             </span>
           </div>
         </div>

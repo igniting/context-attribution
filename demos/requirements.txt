@@ -1,0 +1,5 @@
+# Agent Attribution Demo Dependencies
+torch>=2.0.0
+transformers>=4.36.0
+rich>=13.0.0
+

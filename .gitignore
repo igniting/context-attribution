@@ -28,3 +28,8 @@ Thumbs.db
 # Vite cache
 .vite/
 
+# Python
+.venv/
+__pycache__/
+*.pyc
+
