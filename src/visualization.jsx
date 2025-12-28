@@ -14,6 +14,7 @@ import {
   AdvancedMethodsSlide,
   ProductionAPIsSlide,
   UseCasesSlide,
+  AgentAttributionSlide,
   ConclusionSlide
 } from './slides';
 
@@ -35,6 +36,7 @@ export default function ContextAttributionPresentation() {
     AdvancedMethodsSlide,          // New: TokenShapley, AttriBoT, etc.
     ProductionAPIsSlide,           // New: Anthropic/Google/OpenAI APIs
     UseCasesSlide,
+    AgentAttributionSlide,         // New: LOO vs Shapley, RAG + Tool attribution
     ConclusionSlide
   ];
 

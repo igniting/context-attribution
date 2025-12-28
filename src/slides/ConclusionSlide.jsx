@@ -103,18 +103,22 @@ const ConclusionSlide = () => {
 
       <div className="bg-indigo-900 rounded-xl p-4 text-white">
         <h3 className="text-lg font-bold mb-3">Path Forward for Practitioners</h3>
-        <div className="grid md:grid-cols-3 gap-3">
+        <div className="grid md:grid-cols-4 gap-3">
+          <div className="bg-white/10 rounded-lg p-3">
+            <div className="text-indigo-300 font-semibold mb-1 text-sm">Agent Attribution</div>
+            <p className="text-indigo-100 text-xs">Use LOO + log-prob for fast tool/response attribution — O(n) passes, works across models</p>
+          </div>
           <div className="bg-white/10 rounded-lg p-3">
             <div className="text-indigo-300 font-semibold mb-1 text-sm">Native APIs</div>
-            <p className="text-indigo-100 text-xs">Use Anthropic Citations, Google Grounding for RAG applications with built-in attribution</p>
+            <p className="text-indigo-100 text-xs">Use Anthropic Citations, Google Grounding for RAG with built-in attribution</p>
           </div>
           <div className="bg-white/10 rounded-lg p-3">
             <div className="text-indigo-300 font-semibold mb-1 text-sm">Observability</div>
-            <p className="text-indigo-100 text-xs">Deploy Langfuse (open-source) or LangSmith for production monitoring and tracing</p>
+            <p className="text-indigo-100 text-xs">Deploy Langfuse or LangSmith for production monitoring and tracing</p>
           </div>
           <div className="bg-white/10 rounded-lg p-3">
-            <div className="text-indigo-300 font-semibold mb-1 text-sm">Realistic Expectations</div>
-            <p className="text-indigo-100 text-xs">Current methods explain ~25% of behavior satisfactorily — plan for uncertainty</p>
+            <div className="text-indigo-300 font-semibold mb-1 text-sm">Model Agnostic</div>
+            <p className="text-indigo-100 text-xs">Attribution rankings stay consistent across Qwen, Gemma, Llama — swap freely</p>
           </div>
         </div>
       </div>

@@ -10,10 +10,10 @@ const UseCasesSlide = () => {
       icon: Code,
       title: 'Agent Debugging',
       color: 'blue',
-      preview: 'Trace multi-step reasoning to find errors',
-      detail: 'Comprehensive logging of prompt history, model actions, and retrieval events enables error localization. Circuit tracing reveals multi-step reasoning like "Dallas → Texas → Austin".',
-      stat: '30M',
-      statLabel: 'interpretable features in Anthropic circuit tracing'
+      preview: 'Attribute tool calls and responses to sources',
+      detail: 'Leave-One-Out (LOO) attribution with log-prob differences traces why agents call specific tools (history + RAG → tool) and what informs responses (tool output + RAG → answer). Works across model architectures.',
+      stat: 'O(n)',
+      statLabel: 'forward passes for LOO attribution'
     },
     {
       icon: Users,
@@ -120,19 +120,23 @@ const UseCasesSlide = () => {
       </div>
 
       <div className="mt-4 bg-gray-900 rounded-xl p-4 text-white">
-        <h4 className="font-semibold mb-2 text-sm">Production Tools</h4>
-        <div className="grid md:grid-cols-3 gap-3 text-xs">
+        <h4 className="font-semibold mb-2 text-sm">Production Tools & Techniques</h4>
+        <div className="grid md:grid-cols-4 gap-3 text-xs">
+          <div className="bg-white/10 rounded-lg p-2">
+            <div className="font-medium text-gray-200">LOO Attribution</div>
+            <p className="text-gray-400">Fast log-prob based source attribution for agents</p>
+          </div>
           <div className="bg-white/10 rounded-lg p-2">
             <div className="font-medium text-gray-200">Langfuse</div>
-            <p className="text-gray-400">Open-source LLM tracing, RAG retrieval tracking, cost monitoring</p>
+            <p className="text-gray-400">Open-source LLM tracing, RAG tracking, cost monitoring</p>
           </div>
           <div className="bg-white/10 rounded-lg p-2">
             <div className="font-medium text-gray-200">LangSmith</div>
-            <p className="text-gray-400">Commercial agent behavior tracing with real-time monitoring</p>
+            <p className="text-gray-400">Commercial agent tracing with real-time monitoring</p>
           </div>
           <div className="bg-white/10 rounded-lg p-2">
             <div className="font-medium text-gray-200">TransformerLens</div>
-            <p className="text-gray-400">Activation patching and causal interventions (2.8k stars)</p>
+            <p className="text-gray-400">Activation patching and causal interventions</p>
           </div>
         </div>
       </div>

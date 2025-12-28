@@ -12,4 +12,5 @@ export { default as FaithfulnessSlide } from './FaithfulnessSlide';
 export { default as AdvancedMethodsSlide } from './AdvancedMethodsSlide';
 export { default as ProductionAPIsSlide } from './ProductionAPIsSlide';
 export { default as UseCasesSlide } from './UseCasesSlide';
+export { default as AgentAttributionSlide } from './AgentAttributionSlide';
 export { default as ConclusionSlide } from './ConclusionSlide';

@@ -216,6 +216,10 @@ const ContextCiteSlide = () => {
             ContextCite handles both via targeted ablation design — use corroborative for citations, contributive for debugging.
           </span>
         </p>
+        <p className="text-xs text-cyan-300 mt-2">
+          <strong>For agents:</strong> Simple Leave-One-Out (LOO) with log-prob differences often suffices when sources are independent — 
+          O(n) vs ContextCite's ~32 samples.
+        </p>
       </div>
     </Slide>
   );
